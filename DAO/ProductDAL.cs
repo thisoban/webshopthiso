@@ -1,19 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using IDAL;
 using Models;
 using MySql.Data.MySqlClient;
 
 namespace DAO
 {
-   public class ProductDAL : DAL
+   public class ProductDAL  :DAL   //: IproductDAL
     {
-        public Product GetProduct(int id)
+        public DataProduct GetProduct(int id)
         {
             string query = "SELECT * FROM Product WHERE Id = @Id";
 
-            Product returnproduct = new Product();
-            conn.Open();
+            DataProduct returnproduct = new DataProduct();
+             
             using (MySqlCommand command = new MySqlCommand(query, conn))
             {
                 command.Parameters.Add(new MySqlParameter("@Id", id));
@@ -33,9 +34,9 @@ namespace DAO
 
             return returnproduct;
         }
-        public List<Product> GetProducts(int id)
+        public List<DataProduct> GetProducts()
         {
-            List<Product> producten = new List<Product>();
+            List<DataProduct> producten = new List<DataProduct>();
 
             string query = "SELECT * FROM Product ";
            

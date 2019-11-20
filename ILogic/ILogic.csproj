@@ -5,11 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MySql.Data" Version="8.0.18" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\IDALL\IDAL.csproj" />
     <ProjectReference Include="..\Models\DataModel.csproj" />
   </ItemGroup>
 
