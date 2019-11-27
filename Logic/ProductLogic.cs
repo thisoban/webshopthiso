@@ -2,6 +2,8 @@
 using Models;
 using DAO;
 using ILogic;
+using System.Collections.Generic;
+
 namespace Logic
 {
     public class ProductLogic : IProductLogic
@@ -11,12 +13,12 @@ namespace Logic
             throw new NotImplementedException();
         }
 
-        public DataProduct Getproduct()
+        public ProductData GetproductDetail()
         {
             throw new NotImplementedException();
         }
 
-        public DataProduct GetProducts()
+        public List<ProductData> GetProducts()
         {
             throw new NotImplementedException();
         }

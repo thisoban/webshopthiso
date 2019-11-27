@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using DataModel;
+using Models;
 
 namespace IDAL
 {
@@ -6,7 +9,7 @@ namespace IDAL
     {
         bool InsertProduct();
         bool UpdateProduct();
-        bool GetProducts();
-        bool GetProdduct();
+        List<ProductData> GetProducts();
+        ProductData GetProductDetail(int id);
     }
 }

@@ -2,13 +2,13 @@
 
 namespace Models
 {
-    public class DataProduct
+    public class ProductData
     {
-        public DataProduct()
+        public ProductData()
         {
 
         }
-        public DataProduct(string name, string description, double price, int quantity)
+        public ProductData(string name, string description, double price, int quantity)
         {
             
             Name = name;

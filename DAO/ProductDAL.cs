@@ -1,64 +1,48 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using MySql.Data.MySqlClient;
 using IDAL;
 using Models;
-using MySql.Data.MySqlClient;
 
 namespace DAO
 {
-   public class ProductDAL  :DAL   //: IproductDAL
+    public class ProductDAl : IProductDAL 
     {
-        public DataProduct GetProduct(int id)
+        DAL DALAcces = new DAL();
+        public ProductData GetProductDetail(int id)
         {
-            string query = "SELECT * FROM Product WHERE Id = @Id";
-
-            DataProduct returnproduct = new DataProduct();
-             
-            using (MySqlCommand command = new MySqlCommand(query, conn))
+            ProductData data = new ProductData();
+            string query = "Select * from Product WHERE Id = @Id";
+            DALAcces.conn.Open();
+            MySqlCommand command = new MySqlCommand(query, DALAcces.conn);
+            command.Parameters.Add(new MySqlParameter("@Id", id));
+            MySqlDataReader read = command.ExecuteReader();
+            while (read.Read())
             {
-                command.Parameters.Add(new MySqlParameter("@Id", id));
-               
-                MySqlDataReader read = command.ExecuteReader();
-
-                while (read.Read())
-                {
-                    read.GetInt32(0);
-                    read.GetInt32(1);
-                    read.GetInt32(2);
-                    read.GetInt32(3);
-                }
-
+                data.Id = read.GetInt32(0);
+                data.Name = read.GetString("Name");
+                data.Price = read.GetDouble(3);
+                data.Quantity = read.GetInt32(0);
+                data.Description = read.GetString("Description");
             }
-            conn.Close();
-
-            return returnproduct;
+            return data;
+          
         }
-        public List<DataProduct> GetProducts()
+
+        public List<ProductData> GetProducts()
         {
-            List<DataProduct> producten = new List<DataProduct>();
+            throw new NotImplementedException();
+        }
 
-            string query = "SELECT * FROM Product ";
-           
-            conn.Open();
-            using (MySqlCommand command = new MySqlCommand(query, conn))
-            {
+        public bool InsertProduct()
+        {
+            throw new NotImplementedException();
+        }
 
-                MySqlDataReader read = command.ExecuteReader();
-
-                while (read.Read())
-                {
-                    read.GetInt32(0);
-                    read.GetInt32(1);
-                    read.GetInt32(2);
-                    read.GetInt32(3);
-                    
-                }
-
-            }
-            conn.Close();
-
-            return  producten;
+        public bool UpdateProduct()
+        {
+            throw new NotImplementedException();
         }
     }
 }

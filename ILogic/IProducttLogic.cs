@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Models;
 
 namespace ILogic
@@ -6,9 +7,9 @@ namespace ILogic
     public interface IProductLogic
     {
         bool AddProduct();
-        DataProduct  Getproduct();
+        ProductData GetproductDetail(int id);
         bool UpdateProduct();
-        DataProduct GetProducts();
+        List<ProductData> GetProducts();
         bool RemoveProduct();
     }
 }

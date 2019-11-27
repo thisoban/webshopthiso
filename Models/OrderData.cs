@@ -7,8 +7,8 @@ namespace DataModel
    public class OrderData
     {
         public int Id { get; set; }
-        public string Name { get; set; }
-        public string description { get; set; }
-        public List<OrderLineData> productline { get; set; }
+        public string OrderNumber { get; set; }
+        public string Description { get; set; }
+        public List<OrderLineData> Productlines { get; set; }
     }
 }
