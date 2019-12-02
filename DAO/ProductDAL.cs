@@ -13,7 +13,7 @@ namespace DAO
         public ProductData GetProductDetail(int id)
         {
             ProductData data = new ProductData();
-            string query = "Select * from Product WHERE Id = @Id";
+            string query = "Select * FROM Product WHERE Id = @Id";
             DALAcces.conn.Open();
             MySqlCommand command = new MySqlCommand(query, DALAcces.conn);
             command.Parameters.Add(new MySqlParameter("@Id", id));
@@ -22,9 +22,10 @@ namespace DAO
             {
                 data.Id = read.GetInt32(0);
                 data.Name = read.GetString("Name");
-                data.Price = read.GetDouble(3);
-                data.Quantity = read.GetInt32(0);
                 data.Description = read.GetString("Description");
+                data.Quantity = read.GetInt32(3);
+                data.Price = read.GetDecimal(4);
+                
             }
             return data;
           
@@ -32,7 +33,11 @@ namespace DAO
 
         public List<ProductData> GetProducts()
         {
-            throw new NotImplementedException();
+            List<ProductData> products = new List<ProductData>();
+
+            string query = "SELECT * FROM product";
+            DALAcces.conn.Open();
+            return products;
         }
 
         public bool InsertProduct()

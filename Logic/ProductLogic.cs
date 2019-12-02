@@ -8,14 +8,15 @@ namespace Logic
 {
     public class ProductLogic : IProductLogic
     {
+        IDAL.IProductDAL product;
         public bool AddProduct()
         {
             throw new NotImplementedException();
         }
 
-        public ProductData GetproductDetail()
+        public ProductData GetproductDetail(int id)
         {
-            throw new NotImplementedException();
+           return product.GetProductDetail(id);
         }
 
         public List<ProductData> GetProducts()
