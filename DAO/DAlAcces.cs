@@ -7,7 +7,7 @@ namespace DAO
         public MySqlConnection conn;
         public DAL()
         {
-            conn =  new MySqlConnection("server=localhost;database=testDB;uid=root;pwd=abc123;");
+            conn =  new MySqlConnection("server=studmysql01.fhict.local;Uid=dbi419727;Database=dbi419727;pwd=Testing;");
         }
     }
 }

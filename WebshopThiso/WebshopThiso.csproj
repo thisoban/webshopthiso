@@ -18,6 +18,13 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ILogic\ILogic.csproj" />
+    <ProjectReference Include="..\Logic\Logic.csproj" />
+    <ProjectReference Include="..\Models\DataModel.csproj" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <Folder Include="Views\User\" />
   </ItemGroup>
 
 </Project>

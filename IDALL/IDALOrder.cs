@@ -10,6 +10,6 @@ namespace IDAL
         bool InsertOrder();
         List<OrderData> GetOrders();
         OrderData GetOrder();
-        bool DeleteOrder();
+        bool DeleteOrder(int serialnumber);
     }
 }

@@ -33,15 +33,37 @@ namespace DAO
 
         public List<ProductData> GetProducts()
         {
-            List<ProductData> products = new List<ProductData>();
-
+            List<ProductData> productList = new List<ProductData>();
             string query = "SELECT * FROM product";
             DALAcces.conn.Open();
-            return products;
+            MySqlCommand command = new MySqlCommand(query, DALAcces.conn);
+            MySqlDataReader reader = command.ExecuteReader();
+            try
+            {
+                //read through all the data
+                while (reader.Read())
+                {
+                    //create productlist
+                    ProductData product = new ProductData();
+                    product.Id = reader.GetInt32("Id");
+                    product.Name = reader.GetString("Name");
+                    product.Price = reader.GetDecimal("Sellprice");
+                    product.Serialnumber = reader.GetInt32("Serialnumber");
+                    // save uitlening to the list
+                    productList.Add(product);
+                }
+            }
+            catch
+            {
+                Console.WriteLine("kan de query niet uitvoeren! LOL");
+            }
+            DALAcces.conn.Close();
+            return productList;
         }
 
         public bool InsertProduct()
         {
+            
             throw new NotImplementedException();
         }
 

@@ -6,22 +6,28 @@ using System.Collections.Generic;
 
 namespace Logic
 {
-    public class ProductLogic : IProductLogic
+    public class IProductLogic : ILogic.IProductLogic
     {
-        IDAL.IProductDAL product;
+        
+       ProductDAl product = new ProductDAl();
         public bool AddProduct()
         {
             throw new NotImplementedException();
         }
 
         public ProductData GetproductDetail(int id)
-        {
+        { 
+             id = 1;
+           
            return product.GetProductDetail(id);
         }
 
         public List<ProductData> GetProducts()
         {
-            throw new NotImplementedException();
+            List<ProductData> products = product.GetProducts();
+           
+            
+            return products;
         }
 
         public bool RemoveProduct()
