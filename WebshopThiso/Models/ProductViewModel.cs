@@ -12,5 +12,18 @@ namespace WebshopThiso.Models
         public string Description { get; set; }
         public int Quantity { get; set; }
         public int SerialNumber { get; set; }
+
+        public ProductViewModel()
+        {
+
+        }
+        public ProductViewModel(string name, decimal price, string descriptionm, int quantity, int serialnumber)
+        {
+            Name = name;
+            Price = price;
+            Description = descriptionm;
+            Quantity = quantity;
+            SerialNumber = serialnumber;
+        }
     }
 }

@@ -14,13 +14,10 @@ namespace WebshopThiso.Controllers
         public IActionResult Products()
         {
             var pc1 = new List<ProductViewModel>();
-            var productje = new ProductViewModel();
+           
             foreach (var product in product.GetProducts())
             {
-                productje.Name = product.Name;
-                productje.Price = product.Price;
-                productje.Quantity = product.Quantity;
-                productje.SerialNumber = product.Serialnumber;
+                var productje = new ProductViewModel( product.Name, product.Price, product.Description, product.Quantity, product.Serialnumber);
                 pc1.Add(productje);
             }
            
@@ -41,11 +38,7 @@ namespace WebshopThiso.Controllers
         [HttpPost]
         public IActionResult CreateProduct(ProductViewModel productnew)
         {
-            var newProduct = new ProductData();
-            newProduct.Name = productnew.Name;
-            newProduct.Description = productnew.Description;
-            newProduct.Quantity = productnew.Quantity;
-            newProduct.Price = productnew.Price;
+            ProductData newProduct = new ProductData( productnew.Name, productnew.Description, productnew.Price, productnew.Quantity, productnew.SerialNumber );
 
             product.AddProduct(newProduct);
             return RedirectToAction("products");
