@@ -1,6 +1,6 @@
 ﻿using System;
 using MySql.Data.MySqlClient;
-namespace DAO
+namespace DAL
 {
     public class DAL
     {

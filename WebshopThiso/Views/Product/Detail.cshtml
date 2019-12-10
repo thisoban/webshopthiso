@@ -1,42 +1,42 @@
-﻿@model WebshopThiso.Models.ProductViewModel
+﻿@model Models.ProductData;
 
 @{
-    ViewData["Title"] = "ProductDetail";
+    ViewData["Title"] = "Details";
 }
 
-<h1>View</h1>
+<h1>Details</h1>
 
 <div>
     <h4>ProductViewModel</h4>
     <hr />
     <dl class="row">
-        <dt class="col-sm-2">
+        <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Name)
         </dt>
-        <dd class="col-sm-10">
+        <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Name)
         </dd>
-        <dt class="col-sm-2">
+        <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Price)
         </dt>
-        <dd class="col-sm-10">
+        <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Price)
         </dd>
-        <dt class="col-sm-2">
+        <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Quantity)
         </dt>
-        <dd class="col-sm-10">
+        <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Quantity)
         </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.SerialNumber)
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Serialnumber)
         </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.SerialNumber)
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Serialnumber)
         </dd>
     </dl>
 </div>
 <div>
     @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Products">Back to List</a>
 </div>

@@ -1,32 +1,35 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using MySql.Data.MySqlClient;
-using IDAL;
+﻿using IDAL;
 using Models;
+using MySql.Data.MySqlClient;
+using System;
+using System.Collections.Generic;
+using System.Reflection.Metadata;
 
-namespace DAO
+namespace DAL
 {
     public class ProductDAl : IProductDAL 
     {
         DAL DALAcces = new DAL();
         public ProductData GetProductDetail(int id)
         {
+            DALAcces.conn.Open();
             ProductData data = new ProductData();
             string query = "Select * FROM Product WHERE Id = @Id";
-            DALAcces.conn.Open();
+         
             MySqlCommand command = new MySqlCommand(query, DALAcces.conn);
             command.Parameters.Add(new MySqlParameter("@Id", id));
-            MySqlDataReader read = command.ExecuteReader();
-            while (read.Read())
+          
+            MySqlDataReader reader = command.ExecuteReader();
+             while (reader.Read())
             {
-                data.Id = read.GetInt32(0);
-                data.Name = read.GetString("Name");
-                data.Description = read.GetString("Description");
-                data.Quantity = read.GetInt32(3);
-                data.Price = read.GetDecimal(4);
+                data.Id = reader.GetInt32(0);
+                data.Name = reader.GetString("Name");
+                data.Description = reader.GetString("Description");
+                data.Quantity = reader.GetInt32(3);
+                data.Price = reader.GetDecimal(4);
                 
             }
+            DALAcces.conn.Close();
             return data;
           
         }
@@ -44,11 +47,13 @@ namespace DAO
                 while (reader.Read())
                 {
                     //create productlist
-                    ProductData product = new ProductData();
-                    product.Id = reader.GetInt32("Id");
-                    product.Name = reader.GetString("Name");
-                    product.Price = reader.GetDecimal("Sellprice");
-                    product.Serialnumber = reader.GetInt32("Serialnumber");
+                    ProductData product = new ProductData
+                    {
+                        Id = reader.GetInt32("Id"),
+                        Name = reader.GetString("Name"),
+                        Price = reader.GetDecimal("Sellprice"),
+                        Serialnumber = reader.GetInt32("Serialnumber")
+                    };
                     // save uitlening to the list
                     productList.Add(product);
                 }
@@ -61,10 +66,34 @@ namespace DAO
             return productList;
         }
 
-        public bool InsertProduct()
+        public bool InsertProduct(ProductData newProduct)
         {
-            
-            throw new NotImplementedException();
+            string query = "INSERT INTO product(Name, Description, Quantity, Sellprice, Serialnumber) " +
+                           "VALUES (@name,@description,@quantity,@sellprice,@serialnumber)";
+            DALAcces.conn.Open();
+            MySqlCommand command = new MySqlCommand(query, DALAcces.conn);
+            command.Parameters.Add(new MySqlParameter("@name", newProduct.Name));
+            command.Parameters.Add(new MySqlParameter("@description", newProduct.Description));
+            command.Parameters.Add(new MySqlParameter("@quantity", newProduct.Quantity));
+            command.Parameters.Add(new MySqlParameter("@sellprice", newProduct.Price));
+            command.Parameters.Add(new MySqlParameter("@serialnumber", newProduct.Serialnumber));
+            try
+            {
+                command.ExecuteNonQuery();
+                if (command.ExecuteNonQuery().Equals(1))
+                {
+                    DALAcces.conn.Close();
+                    return true;
+                }
+                
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+            DALAcces.conn.Close();
+            return false;
         }
 
         public bool UpdateProduct()

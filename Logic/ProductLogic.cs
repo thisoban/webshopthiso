@@ -1,32 +1,34 @@
 ﻿using System;
 using Models;
-using DAO;
+using DAL;
 using ILogic;
 using System.Collections.Generic;
-
+using IDAL;
 namespace Logic
 {
     public class IProductLogic : ILogic.IProductLogic
     {
         
-       ProductDAl product = new ProductDAl();
-        public bool AddProduct()
+      readonly IProductDAL product = new ProductDAl();
+        public bool AddProduct(ProductData newProduct)
         {
-            throw new NotImplementedException();
+            //product added
+            if (product.InsertProduct(newProduct).Equals(1)) return true;
+
+            //product not added
+            return false;
+            
         }
 
         public ProductData GetproductDetail(int id)
-        { 
-             id = 1;
-           
-           return product.GetProductDetail(id);
+        {
+            return product.GetProductDetail(id);
         }
 
         public List<ProductData> GetProducts()
         {
             List<ProductData> products = product.GetProducts();
-           
-            
+
             return products;
         }
 

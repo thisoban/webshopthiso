@@ -7,7 +7,7 @@ namespace IDAL
 {
     public interface IProductDAL
     {
-        bool InsertProduct();
+        bool InsertProduct(ProductData product);
         bool UpdateProduct();
         List<ProductData> GetProducts();
         ProductData GetProductDetail(int id);

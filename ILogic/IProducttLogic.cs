@@ -6,7 +6,7 @@ namespace ILogic
 {
     public interface IProductLogic
     {
-        bool AddProduct();
+        bool AddProduct(ProductData newProduct);
         ProductData GetproductDetail(int id);
         bool UpdateProduct();
         List<ProductData> GetProducts();
