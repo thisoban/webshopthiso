@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using IDAL;
 namespace Logic
 {
-    public class IProductLogic : ILogic.IProductLogic
+    public class ProductLogic : ILogic.IProductLogic
     {
         
       readonly IProductDAL product = new ProductDAl();
@@ -32,12 +32,12 @@ namespace Logic
             return products;
         }
 
-        public bool RemoveProduct()
+        public bool RemoveProduct(ProductData product)
         {
             throw new NotImplementedException();
         }
 
-        public bool UpdateProduct()
+        public bool UpdateProduct(ProductData upProduct)
         {
             throw new NotImplementedException();
         }

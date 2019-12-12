@@ -7,7 +7,7 @@ namespace IDAL
     public interface IDalUser
     {
         bool InsertUser();
-        UserData GetUserDetail();
+        UserData GetUserDetail(int id);
         List<UserData> GetUsers();
         bool UpdateUser();
         bool DeleteUser();

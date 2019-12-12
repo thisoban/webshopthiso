@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ILogic\ILogic.csproj" />
+    <ProjectReference Include="..\LogicFactory\LogicFactory.csproj" />
     <ProjectReference Include="..\Logic\Logic.csproj" />
     <ProjectReference Include="..\Models\DataModel.csproj" />
   </ItemGroup>

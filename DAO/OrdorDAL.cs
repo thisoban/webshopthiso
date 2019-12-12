@@ -11,10 +11,10 @@ namespace DAL
     {
         public bool DeleteOrder(int serialnumber)
         {
-            if (serialnumber != null)
-            {
-                return true;
-            }
+            //if (serialnumber != null)
+            //{
+            //    return true;
+            //}
             return false;
             throw new NotImplementedException();
         }

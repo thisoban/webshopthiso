@@ -96,8 +96,17 @@ namespace DAL
             return false;
         }
 
-        public bool UpdateProduct()
+        public bool UpdateProduct(ProductData upProduct)
         {
+            string query = "UPDATE product SET  Name = @name, Description = @description, Quantity = @quantity, Sellprice =@sellprice WHERE Serialnumber = @serialnumber";
+            DALAcces.conn.Open();
+            MySqlCommand command = new MySqlCommand(query, DALAcces.conn);
+            command.Parameters.Add(new MySqlParameter("@name", upProduct.Name));
+            command.Parameters.Add(new MySqlParameter("@description", upProduct.Description));
+            command.Parameters.Add(new MySqlParameter("@quantity", upProduct.Quantity));
+            command.Parameters.Add(new MySqlParameter("@sellprice", upProduct.Price));
+            command.Parameters.Add(new MySqlParameter("@serialnumber", upProduct.Serialnumber));
+
             throw new NotImplementedException();
         }
     }

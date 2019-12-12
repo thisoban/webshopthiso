@@ -1,15 +1,17 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Models;
 using System.Collections.Generic;
+using ILogic;
 using WebshopThiso.Models;
-using IProductLogic = ILogic.IProductLogic;
+using LogicFactory;
+
 
 namespace WebshopThiso.Controllers
 {
     public class ProductController : Controller
     {
-       
-       private readonly IProductLogic product = new Logic.IProductLogic();
+
+        private readonly IProductLogic product = ProductLogicFactory.GProductLogic();
         [Route("Product/Products")] 
         public IActionResult Products()
         {
@@ -31,14 +33,17 @@ namespace WebshopThiso.Controllers
 
             return View(product.GetproductDetail(id));
         }
+        [HttpGet]
         public IActionResult ProductDelete()
         {
-            return View();
+            return RedirectToAction("Products");
         }
+
         [HttpPost]
         public IActionResult CreateProduct(ProductViewModel productnew)
         {
-            ProductData newProduct = new ProductData( productnew.Name, productnew.Description, productnew.Price, productnew.Quantity, productnew.SerialNumber );
+            var newProduct = new ProductData(productnew.Name, productnew.Description, productnew.Price,
+                productnew.Quantity, productnew.SerialNumber);
 
             product.AddProduct(newProduct);
             return RedirectToAction("products");
@@ -47,9 +52,26 @@ namespace WebshopThiso.Controllers
         {
             return View();
         }
-        public IActionResult Edit()
+
+        [HttpGet]
+        public IActionResult Edit(int serialNumber)
         {
+            product.GetproductDetail(serialNumber);
             return View();
+        }
+        [HttpPost]
+        public IActionResult Edit(ProductViewModel upProduct)
+        {
+            ProductData updateProductData= new ProductData()
+            {
+                Name = upProduct.Name,
+                Price = upProduct.Price,
+                Description = upProduct.Description,
+                Quantity = upProduct.Quantity,
+                Serialnumber = upProduct.SerialNumber
+            };
+            product.UpdateProduct(updateProductData);
+            return RedirectToAction("Products");
         }
     }
 }
