@@ -9,12 +9,12 @@ namespace DAL
 {
     public class ProductDAl : IProductDAL 
     {
-        DAL DALAcces = new DAL();
+        private readonly DAL DALAcces = new DAL();
         public ProductData GetProductDetail(int id)
         {
             DALAcces.conn.Open();
             ProductData data = new ProductData();
-            string query = "Select * FROM Product WHERE Id = @Id";
+            string query = "Select * FROM Product WHERE serialnumber = @Id";
          
             MySqlCommand command = new MySqlCommand(query, DALAcces.conn);
             command.Parameters.Add(new MySqlParameter("@Id", id));

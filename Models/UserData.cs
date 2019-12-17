@@ -6,12 +6,14 @@ namespace DataModel
 {
    public class UserData
     {
-        public int Id { get; set; }
+        public char Id { get; set; }
         public string Firstname { get; set; }
         public string Surname { get; set; }
         public string Email { get; set; }
+        public string Passsword { get; set; }
         public string Adres { get; set; }
         public string Postalcode { get; set; }
         public string City { get; set; }
+        public bool Admin { get; set; }
     }
 }

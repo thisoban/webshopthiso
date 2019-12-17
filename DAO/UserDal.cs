@@ -9,7 +9,7 @@ namespace DAL
 {
    public class UserDal : IDalUser
     {
-        DAL DALAcces = new DAL();
+       private readonly DAL DALAcces = new DAL();
         public bool DeleteUser()
         {
             throw new NotImplementedException();
@@ -27,16 +27,19 @@ namespace DAL
             MySqlDataReader reader = command.ExecuteReader();
             while (reader.Read())
             {
-                data.Id = reader.GetInt32(0);
-                data.Firstname = reader.GetString("Name");
-                data.Surname = reader.GetString("Description");
-                data.Adres = reader.GetString(3);
-                data.City = reader.GetString(4);
+                data.Id = reader.GetChar(0);
+                data.Email = reader.GetString(2);
+                data.Passsword = reader.GetString(3);
+
+                //data.Firstname = reader.GetString("Name");
+                //data.Surname = reader.GetString("surname");
+                //data.Adres = reader.GetString(3);
+                //data.City = reader.GetString(4);
 
             }
             DALAcces.conn.Close();
             return data;
-            throw new NotImplementedException();
+           
         }
 
         public List<UserData> GetUsers()
@@ -44,8 +47,32 @@ namespace DAL
             throw new NotImplementedException();
         }
 
-        public bool InsertUser()
+        public bool InsertUser(UserData newUser)
         {
+            string query = "INSERT INTO User(email, password, admin, Role_id) " +
+                           "VALUES (@email,@password,@quantity,@sellprice,@serialnumber)";
+            DALAcces.conn.Open();
+            MySqlCommand command = new MySqlCommand(query, DALAcces.conn);
+            command.Parameters.Add(new MySqlParameter("@email", newUser.Email));
+            command.Parameters.Add(new MySqlParameter("@password", newUser.Passsword));
+            command.Parameters.Add(new MySqlParameter("@admin", newUser.Admin));
+            try
+            {
+                command.ExecuteNonQuery();
+                if (command.ExecuteNonQuery().Equals(1))
+                {
+                    DALAcces.conn.Close();
+                    return true;
+                }
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+            DALAcces.conn.Close();
+            return false;
             throw new NotImplementedException();
         }
 

@@ -6,7 +6,7 @@ using ILogic;
 
 namespace Logic
 {
-    class OrderLogic : IOrderLogic
+    public class OrderLogic : IOrderLogic
     {
         public OrderData AddOrder()
         {

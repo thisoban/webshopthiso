@@ -14,6 +14,10 @@ namespace WebshopThiso.Models
         public int Quantity { get; set; }
         public int SerialNumber { get; set; }
 
+        public ProductViewModel()
+        {
+
+        }
         public ProductViewModel(ProductData product)
         {
             Name = product.Name;

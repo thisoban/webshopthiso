@@ -3,7 +3,6 @@ using Models;
 using System.Collections.Generic;
 using ILogic;
 using WebshopThiso.Models;
-using LogicFactory;
 
 
 namespace WebshopThiso.Controllers
@@ -11,7 +10,7 @@ namespace WebshopThiso.Controllers
     public class ProductController : Controller
     {
 
-        private readonly IProductLogic product = ProductLogicFactory.GProductLogic();
+        private readonly IProductLogic product = LogicFactory.LogicFactory.GProductLogic();
         [Route("Product/Products")] 
         public IActionResult Products()
         {
@@ -56,8 +55,9 @@ namespace WebshopThiso.Controllers
         [HttpGet]
         public IActionResult Edit(int serialNumber)
         {
-            product.GetproductDetail(serialNumber);
-            return View();
+         
+            ProductViewModel editproduct = new ProductViewModel(product.GetproductDetail(serialNumber));
+            return View(editproduct);
         }
         [HttpPost]
         public IActionResult Edit(ProductViewModel upProduct)
