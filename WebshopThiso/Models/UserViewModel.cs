@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DataModel;
 
 namespace WebshopThiso.Models
 {
@@ -13,5 +14,22 @@ namespace WebshopThiso.Models
         public string Adres { get; set; }
         public string Postalcode { get; set; }
         public string City { get; set; }
+        public string password { get; set; }
+
+        public UserViewModel(UserData data)
+        {
+            Firstname = data.Firstname;
+            Surname = data.Surname;
+            Email = data.Email;
+            Adres = data.Email;
+            Postalcode = data.Postalcode;
+            City = data.City;
+            password = data.Passsword;
+        }
+
+        public UserViewModel()
+        {
+
+        }
     }
 }

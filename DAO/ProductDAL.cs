@@ -62,7 +62,11 @@ namespace DAL
             {
                 Console.WriteLine("kan de query niet uitvoeren! LOL");
             }
-            DALAcces.conn.Close();
+            finally
+            {
+                DALAcces.conn.Close();
+            }
+          
             return productList;
         }
 

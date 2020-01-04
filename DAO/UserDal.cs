@@ -19,7 +19,7 @@ namespace DAL
         {
             DALAcces.conn.Open();
             UserData data = new UserData();
-            string query = "Select * FROM user WHERE Id = @Id";
+            string query = "Select * FROM customer WHERE Id = @Id";
 
             MySqlCommand command = new MySqlCommand(query, DALAcces.conn);
             command.Parameters.Add(new MySqlParameter("@Id", id));

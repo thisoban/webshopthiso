@@ -9,8 +9,8 @@ namespace Logic
     public class OrderLogic : IOrderLogic
     {
         public OrderData AddOrder()
-        {
-            throw new NotImplementedException();
+        {if 
+            throw  new NotImplementedException();
         }
 
         public OrderData GetOrderDetail()

@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="3.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\DAO\DAL.csproj" />
     <ProjectReference Include="..\ILogic\ILogic.csproj" />
     <ProjectReference Include="..\Models\DataModel.csproj" />
