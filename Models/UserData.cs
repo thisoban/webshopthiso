@@ -12,6 +12,7 @@ namespace DataModel
         public string Email { get; set; }
         public string Passsword { get; set; }
         public string Adres { get; set; }
+        public string Housenumber { get; set; }
         public string Postalcode { get; set; }
         public string City { get; set; }
         public bool Admin { get; set; }

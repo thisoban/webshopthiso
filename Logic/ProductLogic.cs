@@ -6,10 +6,10 @@ using System.Collections.Generic;
 using IDAL;
 namespace Logic
 {
-    public class ProductLogic : ILogic.IProductLogic
+    public class ProductLogic : IProductLogic
     {
-        
-      readonly IProductDAL product = new ProductDAl();
+        private readonly IProductDAL product = DalFactory.DalFactory.GProductDal();
+       
         public bool AddProduct(ProductData newProduct)
         {
             //product added

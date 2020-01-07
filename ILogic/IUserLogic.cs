@@ -8,7 +8,7 @@ namespace ILogic
    public interface  IUserLogic
    {
         bool Login(UserData checkuservalid);
-        bool Register();
+        bool Register(UserData registerUserData);
         bool Logout();
         bool RemoveUser();
    }
