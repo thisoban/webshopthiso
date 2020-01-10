@@ -39,7 +39,12 @@ namespace Logic
 
         public bool UpdateProduct(ProductData upProduct)
         {
-            throw new NotImplementedException();
+            if (product.UpdateProduct(upProduct))
+            {
+                return true;
+            }
+
+            return false;
         }
     }
 }

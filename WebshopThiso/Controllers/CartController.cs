@@ -1,9 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using System.Linq;
+using ILogic;
+using LogicFactory;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Routing;
+using Models;
+using Newtonsoft.Json;
 using WebshopThiso.Helper;
 using WebshopThiso.Models;
 
@@ -12,13 +13,24 @@ namespace WebshopThiso.Controllers
     [Route("cart")]
     public class CartController : Controller
     {
-        [Route("index")]
-        public IActionResult Index()
+        private readonly ICartLogic _cartLogic = LogicFactory.LogicFactory.GCartLogic();
+           [Route("index")]
+        
+        public IActionResult Index( IProductLogic iproductlogic)
         {
-            var cart = SessionHelper.GetObjectFromJson<List<ProductViewModel>>(HttpContext.Session, "cart");
-            ViewBag.cart = cart;
-            ViewBag.total = cart.Sum(item => item.Price * item.Quantity);
-            return View();
+            string cookie = Request.Cookies["cartitems"];
+            Dictionary<int, int> winkelmandje = JsonConvert.DeserializeObject<Dictionary<int, int>>(cookie);
+            List<ProductData> allproducts = iproductlogic.GetProducts().ToList();
+            List<ProductData> CartProducts = new List<ProductData>();
+            foreach ((int key, int value) in winkelmandje)
+            {
+                CartProducts = allproducts.Where(product => product.Id == key).ToList();
+            }
+            return View(CartProducts);
+            //var cart = SessionHelper.GetObjectFromJson<List<ProductViewModel>>(HttpContext.Session, "cart");
+            //ViewBag.cart = cart;
+            //ViewBag.total = cart.Sum(item => item.Price * item.Quantity);
+            //return View();
         }
        [Route("buy/{id}")]
         public IActionResult Buy(string id)
@@ -34,7 +46,7 @@ namespace WebshopThiso.Controllers
             else
             {
                 List<CartItem> cart = SessionHelper.GetObjectFromJson<List<CartItem>>(HttpContext.Session, "cart");
-                int index = isExist(id);
+                int index = IsExist(id);
                 if (index != -1)
                 {
                     cart[index].Quantity++;
@@ -52,13 +64,13 @@ namespace WebshopThiso.Controllers
         public IActionResult Remove(string id)
         {
             List<CartItem> cart = SessionHelper.GetObjectFromJson<List<CartItem>>(HttpContext.Session, "cart");
-            int index = isExist(id);
+            int index = IsExist(id);
             cart.RemoveAt(index);
             SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);
             return RedirectToAction("Index");
         }
 
-        private int isExist(string id)
+        private int IsExist(string id)
         {
             List<CartItem> cart = SessionHelper.GetObjectFromJson<List<CartItem>>(HttpContext.Session, "cart");
             for (int i = 0; i < cart.Count; i++)

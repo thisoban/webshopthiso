@@ -12,6 +12,7 @@ namespace WebshopThiso.Controllers
 
         private readonly IProductLogic product = LogicFactory.LogicFactory.GProductLogic();
         [Route("Product/Products")] 
+        
         public IActionResult Products()
         {
             var pc1 = new List<ProductViewModel>();

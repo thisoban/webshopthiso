@@ -18,19 +18,32 @@ namespace DAL
          
             MySqlCommand command = new MySqlCommand(query, DALAcces.conn);
             command.Parameters.Add(new MySqlParameter("@Id", id));
-          
-            MySqlDataReader reader = command.ExecuteReader();
-             while (reader.Read())
+            try
             {
-                data.Id = reader.GetInt32(0);
-                data.Name = reader.GetString("Name");
-                data.Description = reader.GetString("Description");
-                data.Quantity = reader.GetInt32(3);
-                data.Price = reader.GetDecimal(4);
-                
+                MySqlDataReader reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    data.Id = reader.GetInt32(0);
+                    data.Name = reader.GetString("Name");
+                    data.Description = reader.GetString("Description");
+                    data.Quantity = reader.GetInt32(3);
+                    data.Price = reader.GetDecimal(4);
+
+                }
+
+                DALAcces.conn.Close();
+                return data;
             }
-            DALAcces.conn.Close();
-            return data;
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+            finally
+            {
+                DALAcces.conn.Close();
+            }
+           
           
         }
 
@@ -58,9 +71,10 @@ namespace DAL
                     productList.Add(product);
                 }
             }
-            catch
+            catch (Exception e)
             {
-                Console.WriteLine("kan de query niet uitvoeren! LOL");
+                Console.WriteLine(e);
+                throw;
             }
             finally
             {
@@ -89,21 +103,27 @@ namespace DAL
                     DALAcces.conn.Close();
                     return true;
                 }
-                
+
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
                 throw;
             }
-            DALAcces.conn.Close();
+            finally
+            {
+                DALAcces.conn.Close();
+            }
+          
             return false;
         }
 
         public bool UpdateProduct(ProductData upProduct)
         {
-            string query = "UPDATE product SET  Name = @name, Description = @description, Quantity = @quantity, Sellprice =@sellprice WHERE Serialnumber = @serialnumber";
             DALAcces.conn.Open();
+            string query =
+                "UPDATE product SET  Name = @name, Description = @description, Quantity = @quantity, Sellprice =@sellprice WHERE Serialnumber = @serialnumber";
+            
             MySqlCommand command = new MySqlCommand(query, DALAcces.conn);
             command.Parameters.Add(new MySqlParameter("@name", upProduct.Name));
             command.Parameters.Add(new MySqlParameter("@description", upProduct.Description));
@@ -111,7 +131,20 @@ namespace DAL
             command.Parameters.Add(new MySqlParameter("@sellprice", upProduct.Price));
             command.Parameters.Add(new MySqlParameter("@serialnumber", upProduct.Serialnumber));
 
-            throw new NotImplementedException();
+            try
+            {
+                command.ExecuteNonQuery();
+                return true;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return false;
+            }
+            finally
+            {
+                DALAcces.conn.Close();
+            }
         }
     }
 }

@@ -20,5 +20,10 @@ namespace LogicFactory
             return new UserLogic();
         }
 
+        public static ICartLogic GCartLogic()
+        {
+            return new CartLogic();
+        }
+
     }
 }

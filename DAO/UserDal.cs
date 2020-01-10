@@ -13,6 +13,10 @@ namespace DAL
        private readonly DAL DALAcces = new DAL();
         public bool DeleteUser(UserData data)
         {
+            string query = "UPDATE `user` SET `id`=[value - 1],`email`=[value - 2],`password`=[value - 3],`Admin`=[value - 4],`Role_id`=@roleid WHERE id = @id";
+            DALAcces.conn.Open();
+            MySqlCommand command = new MySqlCommand(query, DALAcces.conn);
+           // command.Parameters.Add()
             throw new NotImplementedException();
         }
 
