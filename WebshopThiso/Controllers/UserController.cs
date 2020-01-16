@@ -19,7 +19,7 @@ namespace WebshopThiso.Controllers
         {
             return View();
         }
-        [HttpGet]
+        [HttpPost]
         public IActionResult Login(UserViewModel user)
         {
             UserData userlog = new UserData();

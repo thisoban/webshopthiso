@@ -23,8 +23,8 @@
                     </button>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                         <a class="dropdown-item" asp-controller="User" asp-action ="Profile">Action</a>
-                        <a class="dropdown-item"  asp-controller="" asp-action="prod">Another action</a>
-                        <a class="dropdown-item"  asp-action="#">Something else here</a>
+                        @*<a class="dropdown-item"  asp-controller="" asp-action="prod">Another action</a>
+                        <a class="dropdown-item"  asp-action="#">Something else here</a>*@
                     </div>
                 </div>
 
@@ -41,6 +41,9 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Login">login</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Product" asp-action="CreateProduct">add a product</a>

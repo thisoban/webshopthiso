@@ -46,10 +46,10 @@ namespace DAL
         {
             DALAcces.conn.Open();
             UserData data = new UserData();
-            string query = "Select * FROM user WHERE IdUser = @IdUser";
+            string query = "Select * FROM user WHERE email = @email";
 
             MySqlCommand command = new MySqlCommand(query, DALAcces.conn);
-            command.Parameters.Add(new MySqlParameter("@IdUser", emaildata.Email));
+            command.Parameters.Add(new MySqlParameter("@email", emaildata.Email));
 
             MySqlDataReader reader = command.ExecuteReader();
             while (reader.Read())

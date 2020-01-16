@@ -8,6 +8,7 @@ namespace WebshopThiso.Models
 {
     public class UserViewModel
     {
+        public string  uid { get; set; }
         public string Firstname { get; set; }
         public string Surname { get; set; }
         public string Email { get; set; }
@@ -18,6 +19,7 @@ namespace WebshopThiso.Models
 
         public UserViewModel(UserData data)
         {
+            uid = data.uid;
             Firstname = data.Firstname;
             Surname = data.Surname;
             Email = data.Email;
