@@ -27,6 +27,7 @@
 
 
   <ItemGroup>
+    <Folder Include="Views\Order\" />
     <Folder Include="wwwroot\images\" />
   </ItemGroup>
 

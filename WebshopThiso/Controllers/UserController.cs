@@ -14,10 +14,7 @@ namespace WebshopThiso.Controllers
     {
         private readonly IUserLogic _userLogic = LogicFactory.LogicFactory.GUserLogic();
 
-        public string GetUidFromLocatStorage()
-        {
-            return new LocalStorage().Get("uid").ToString();
-        }
+       
         public IActionResult Login()
         {
             return View();
@@ -37,6 +34,11 @@ namespace WebshopThiso.Controllers
             }
 
             return View(_userLogic.Login(userlog));
+        }
+
+        public IActionResult Profile()
+        {
+            return View();
         }
     }
 }

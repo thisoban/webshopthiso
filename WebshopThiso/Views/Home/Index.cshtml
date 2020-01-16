@@ -1,12 +1,10 @@
 ﻿@using System.Configuration
 @using Hanssens.Net
-@model int;
-@{
-        ViewData["Title"] = "Home Page";
-}
-@{
+@using WebshopThiso.Controllers
 
-        protected string motherfucker = Model.ToString();
+@{
+         ViewData["Title"] = "Home Page";
+         string UserUid = HomeController.GetUidFromLocatStorage();
 }
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
