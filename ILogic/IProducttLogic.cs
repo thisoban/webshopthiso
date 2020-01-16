@@ -11,6 +11,5 @@ namespace ILogic
         ProductData GetproductDetail(int id);
         bool UpdateProduct(ProductData upProduct);
         List<ProductData> GetProducts();
-        bool RemoveProduct(ProductData product);
     }
 }

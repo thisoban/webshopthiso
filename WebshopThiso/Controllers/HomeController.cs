@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Diagnostics;
+using Hanssens.Net;
 using WebshopThiso.Models;
 
 namespace WebshopThiso.Controllers
@@ -16,7 +17,9 @@ namespace WebshopThiso.Controllers
 
         public IActionResult Index()
         {
-            return View();
+
+            var item = typeof(LocalStorage);
+            return View(item);
         }
 
         public IActionResult Privacy()

@@ -37,7 +37,7 @@ namespace DAL
                     //create productlist
                     OrderData order = new OrderData
                     {
-                        Id = reader.GetInt32("Id"),
+                        Id = reader.GetInt32("IdUser"),
                         OrderNumber = reader.GetString("Name"),
                         
                     };

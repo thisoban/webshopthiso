@@ -1,7 +1,13 @@
-﻿l@{
-    ViewData["Title"] = "Home Page";
+﻿@using System.Configuration
+@using Hanssens.Net
+@model int;
+@{
+        ViewData["Title"] = "Home Page";
 }
+@{
 
+        protected string motherfucker = Model.ToString();
+}
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
     <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>

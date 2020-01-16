@@ -22,7 +22,12 @@ namespace Logic
 
         public ProductData GetproductDetail(int id)
         {
-            return product.GetProductDetail(id);
+            if (product.GetProductDetail(id).Description != "")
+            {
+                return product.GetProductDetail(id);
+            }
+
+            return null;
         }
 
         public List<ProductData> GetProducts()
@@ -32,19 +37,9 @@ namespace Logic
             return products;
         }
 
-        public bool RemoveProduct(ProductData product)
-        {
-            throw new NotImplementedException();
-        }
-
         public bool UpdateProduct(ProductData upProduct)
         {
-            if (product.UpdateProduct(upProduct))
-            {
-                return true;
-            }
-
-            return false;
+            return product.UpdateProduct(upProduct);
         }
     }
 }

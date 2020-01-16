@@ -32,13 +32,14 @@
                 <input asp-for="Description" class="form-control" />
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
+           
             <div class="overflow-hidden">
-                <label asp-for="SerialNumber" class="control-label"></label>
-                <input asp-for="SerialNumber" class="form-control" />
-                <span asp-validation-for="SerialNumber" class="text-danger"></span>
+                <label hidden asp-for="SerialNumber" class="control-label"></label>
+                <input hidden  asp-for="SerialNumber" class="form-control" />
+                <span hidden asp-validation-for="SerialNumber" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Save" class="bstn btn-primary" />
             </div>
         </form>
     </div>

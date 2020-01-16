@@ -12,14 +12,21 @@ namespace Logic
 {
     public class UserLogic : IUserLogic
     {
-        private readonly IDalUser user = DalFactory.DalFactory.GUserDAl();
+        private readonly IDalUser userDal = DalFactory.DalFactory.GUserDAl();
         public bool Login(UserData user)
         {
+            bool usercredentials = false;
             if (user.Email != null)
             {
-
+                if (user.Email == userDal.GetUserDetail(user).Email)
+                {
+                    if (user.Passsword == userDal.GetUserDetail(user).Passsword)
+                    {
+                        usercredentials = true;
+                    }
+                }
             }
-            throw new NotImplementedException();
+            return usercredentials;
         }
 
         public bool Logout()
@@ -37,6 +44,13 @@ namespace Logic
         public bool RemoveUser()
         {
             throw new NotImplementedException();
+        }
+
+        private bool IsAdmin(UserData user)
+        {
+            bool userRole = user.Admin;
+
+            return userRole;
         }
     }
 }

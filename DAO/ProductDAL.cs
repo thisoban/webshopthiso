@@ -10,14 +10,14 @@ namespace DAL
     public class ProductDAl : IProductDAL 
     {
         private readonly DAL DALAcces = new DAL();
-        public ProductData GetProductDetail(int id)
+        public ProductData GetProductDetail(int serialnumber)
         {
             DALAcces.conn.Open();
             ProductData data = new ProductData();
-            string query = "Select * FROM Product WHERE serialnumber = @Id";
+            string query = "Select * FROM Product WHERE serialnumber = @SerialNumber";
          
             MySqlCommand command = new MySqlCommand(query, DALAcces.conn);
-            command.Parameters.Add(new MySqlParameter("@Id", id));
+            command.Parameters.Add(new MySqlParameter("@SerialNumber", serialnumber));
             try
             {
                 MySqlDataReader reader = command.ExecuteReader();
@@ -43,8 +43,7 @@ namespace DAL
             {
                 DALAcces.conn.Close();
             }
-           
-          
+            
         }
 
         public List<ProductData> GetProducts()
@@ -62,7 +61,7 @@ namespace DAL
                     //create productlist
                     ProductData product = new ProductData
                     {
-                        Id = reader.GetInt32("Id"),
+                        Id = reader.GetInt32("id"),
                         Name = reader.GetString("Name"),
                         Price = reader.GetDecimal("Sellprice"),
                         Serialnumber = reader.GetInt32("Serialnumber")
@@ -146,5 +145,7 @@ namespace DAL
                 DALAcces.conn.Close();
             }
         }
+
+       
     }
 }

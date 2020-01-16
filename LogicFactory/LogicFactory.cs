@@ -1,7 +1,6 @@
 ﻿using System;
 using ILogic;
 using Logic;
-using IProductLogic = ILogic.IProductLogic;
 
 namespace LogicFactory
 {

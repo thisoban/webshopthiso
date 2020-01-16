@@ -26,13 +26,13 @@ namespace WebshopThiso.Models
             Quantity = product.Quantity;
             SerialNumber = product.Serialnumber;
         }
-        public ProductViewModel(string name, decimal price, string descriptionm, int quantity, int serialnumber)
+        public ProductViewModel(string name, decimal price, string description, int quantity, int serialNumber)
         {
             Name = name;
             Price = price;
-            Description = descriptionm;
+            Description = description;
             Quantity = quantity;
-            SerialNumber = serialnumber;
+            SerialNumber = serialNumber;
         }
     }
 }
