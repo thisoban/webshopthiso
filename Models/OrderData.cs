@@ -6,9 +6,10 @@ namespace DataModel
 {
    public class OrderData
     {
-        public int Id { get; set; }
-        public UserData user { get; set; }
+     
+        public UserData User { get; set; }
         public string OrderNumber { get; set; }
+       public DateTime Date { get; set; }
         public List<OrderLineData> Productlines { get; set; }
     }
 }
