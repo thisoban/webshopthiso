@@ -12,24 +12,29 @@ namespace Logic
 {
     public class UserLogic : IUserLogic
     {
-        private readonly IDalUser userDal = DalFactory.DalFactory.GUserDAl();
+        private readonly IDalUser _userDal = DalFactory.DalFactory.GUserDAl();
         public UserData Login(UserData user)
         {
             UserData loginUserData = new UserData();
           
             if (user.Email != null)
             {
-                if (user.Email == userDal.GetUserDetail(user).Email)
+                if (user.Email == _userDal.GetUserDetail(user).Email)
                 {
-                    if (user.Passsword == userDal.GetUserDetail(user).Passsword)
+                    if (user.Passsword == _userDal.GetUserDetail(user).Passsword)
                     {
-                        loginUserData = userDal.GetUserDetail(user);
+                        loginUserData = _userDal.GetUserDetail(user);
                     }
                 }
             }
             return loginUserData;
         }
 
+        public UserData profile(string uid)
+        {
+            UserData profile = _userDal.GetuserdetailFromUid(uid);
+            return profile;
+        }
         public bool Logout()
         {
 
@@ -54,6 +59,6 @@ namespace Logic
             return userRole;
         }
 
-        public  UserData GetUser(string uid) => userDal.GetuserdetailFromUid(uid);
+        public  UserData GetUser(string uid) => _userDal.GetuserdetailFromUid(uid);
     }
 }

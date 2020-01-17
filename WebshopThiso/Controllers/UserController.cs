@@ -5,7 +5,10 @@ using System.Threading.Tasks;
 using DataModel;
 using Hanssens.Net;
 using ILogic;
+using Newtonsoft.Json;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Razor.Language.CodeGeneration;
+using RestSharp;
 using WebshopThiso.Models;
 
 namespace WebshopThiso.Controllers
@@ -37,19 +40,29 @@ namespace WebshopThiso.Controllers
             userlog.Passsword = user.password;
             UserData UserCondition = _userLogic.Login(userlog);
             if (UserCondition != null)
-            { 
-                var storage = new LocalStorage();
-                storage.Store("uid", UserCondition.uid);
-                storage.Persist();
+            {
+                HttpCookie myCookie = new HttpCookie();
+                DateTime now = DateTime.Now;
+                myCookie.Value = now.ToString();
+                myCookie.Expires = now.AddHours(24);
+                Response.Cookies.Append("uid", UserCondition.uid);
                 return RedirectToAction("index", "Home");
             }
-
             return View(_userLogic.Login(userlog));
         }
 
         public IActionResult Profile()
         {
-            return View();
+            string cookie =  Request.Cookies["uid"];
+
+            UserViewModel profileuser =  new UserViewModel()
+            {
+                 uid = _userLogic.GetUser(cookie).uid,
+                 Email = _userLogic.GetUser(cookie).Email,
+                 
+            };
+
+            return View(profileuser);
         }
     }
 }

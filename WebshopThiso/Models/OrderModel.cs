@@ -11,7 +11,7 @@ namespace WebshopThiso.Models
         public int Id { get; set; }
         public UserViewModel user { get; set; }
         public string OrderNumber { get; set; }
-        public string Description { get; set; }
+        public DateTime Date { get; set; }
         public List<OrderLineData> Productlines { get; set; }
 
     }

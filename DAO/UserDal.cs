@@ -43,24 +43,28 @@ namespace DAL
            return true;
         }
 
-        public UserData GetUserDetail(UserData emaildata)
+        public UserData GetUserDetail(UserData uid)
         {
             DALAcces.conn.Open();
             UserData data = new UserData();
-            string query = "Select * FROM user WHERE email = @email";
+            string query = "Select * FROM user WHERE uid = @uid";
 
             MySqlCommand command = new MySqlCommand(query, DALAcces.conn);
-            command.Parameters.Add(new MySqlParameter("@email", emaildata.Email));
+            command.Parameters.Add(new MySqlParameter("@uid", uid.uid));
 
             MySqlDataReader reader = command.ExecuteReader();
             while (reader.Read())
             {
-                data.uid = reader.GetString(1);
+                
                 data.Email = reader.GetString(2);
                 data.Passsword = reader.GetString(3);
-
+                data.Admin = reader.GetBoolean(5);
             }
             DALAcces.conn.Close();
+            if (data.Admin == false)
+            {
+             return  GetUserDetail(uid);
+            }
             return data;
            
         }
@@ -76,11 +80,13 @@ namespace DAL
             MySqlDataReader reader = command.ExecuteReader();
             while (reader.Read())
             {
-                data.uid = reader.GetString(1);
                 data.Email = reader.GetString(2);
                 data.Passsword = reader.GetString(3);
+                data.Admin = reader.GetBoolean(5);
 
             }
+
+           
             DALAcces.conn.Close();
             return data;
 
@@ -205,6 +211,26 @@ namespace DAL
             }
         }
 
+        private UserData GetCustomerDetail(string uid)
+        {
+            UserData data = new UserData();
+            string query = "SELECT * FROM customer where uid = @uid";
+            DALAcces.conn.Open();
+            MySqlCommand command = new MySqlCommand(query, DALAcces.conn);
+            command.Parameters.Add(new MySqlParameter("uid", uid));
+            MySqlDataReader reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                data.Firstname = reader.GetString(4);
+                data.Surname = reader.GetString(5);
+                data.Adres = reader.GetString(6);
+                data.Housenumber = reader.GetString(7);
+                data.Postalcode = reader.GetString(8);
+                data.City = reader.GetString(9);
+            }
+
+            return data;
+        }
         private bool CheckAdmin(UserData user)
         {
              int admin = 0;
