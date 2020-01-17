@@ -6,7 +6,7 @@ using DataModel;
 
 namespace WebshopThiso.Models
 {
-    public class OrderModel
+    public class OrderViewModel
     {
         public int Id { get; set; }
         public UserViewModel user { get; set; }

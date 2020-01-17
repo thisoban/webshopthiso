@@ -7,8 +7,8 @@ namespace ILogic
     public interface IOrderLogic
     {
         OrderData AddOrder(OrderData order);
-        List<OrderData> GetOrders();
-        OrderData GetOrderDetail();
+        List<OrderData> GetOrders(int uid);
+        OrderData GetOrderDetail(int order);
 
     }
 }

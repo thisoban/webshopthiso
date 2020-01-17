@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using DataModel;
 using IDAL;
@@ -9,26 +10,33 @@ namespace Logic
 {
     public class OrderLogic : IOrderLogic
     {
-        private readonly IDALOrder order = DalFactory.DalFactory.GOrderDal();
+        private readonly IDALOrder IOrder = DalFactory.DalFactory.GOrderDal();
         public OrderData AddOrder(OrderData orderNew)
         {
-            if (orderNew.user.Email == String.Empty)
+            if (orderNew.User.Email == String.Empty)
             {
                 return new OrderData();
             }
             throw  new NotImplementedException();
         }
 
-        public OrderData GetOrderDetail()
+        public OrderData GetOrderDetail(int ordernumber)
         {
             OrderData orderdetail = new OrderData();
 
             throw new NotImplementedException();
         }
 
-        public List<OrderData> GetOrders()
+        public List<OrderData> GetOrders(int uid)
         {
-            throw new NotImplementedException();
+            List<OrderData> logicOrderData = new List<OrderData>();
+            if (IOrder.GetOrders().Count >= 0)
+            {
+                logicOrderData = IOrder.GetOrders();
+                return logicOrderData;
+            }
+
+            return logicOrderData;
         }
     }
 }

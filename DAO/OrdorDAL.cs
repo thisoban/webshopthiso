@@ -24,24 +24,20 @@ namespace DAL
         public List<OrderData> GetOrders()
         {
             List<OrderData> orderList = new List<OrderData>();
-            string query = "SELECT * FROM product";
+            string query = "SELECT * FROM ordor WHERE CustomUser_Id = @uid";
             
             DALAcces.conn.Open();
             MySqlCommand command = new MySqlCommand(query, DALAcces.conn);
             MySqlDataReader reader = command.ExecuteReader();
             try
             {
-                //read through all the data
                 while (reader.Read())
                 {
-                    //create productlist
                     OrderData order = new OrderData
                     {
-                        Id = reader.GetInt32("IdUser"),
-                        OrderNumber = reader.GetString("Name"),
-                        
+                        OrderNumber = reader.GetString("ordernumber"),
+                            Date =  reader.GetDateTime("date")
                     };
-                    // save uitlening to the list
                     orderList.Add(order);
                 }
             }
@@ -53,9 +49,7 @@ namespace DAL
             {
                 DALAcces.conn.Close();
             }
-
             return orderList;
-            throw new NotImplementedException();
         }
 
         public bool InsertOrder()
