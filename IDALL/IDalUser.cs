@@ -11,6 +11,7 @@ namespace IDAL
         List<UserData> GetUsers();
         bool UpdateUser(UserData data);
         bool DeleteUser(UserData data);
-        
+         UserData GetuserdetailFromUid(string uid);
+
     }
 }

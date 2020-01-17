@@ -14,6 +14,16 @@ namespace WebshopThiso.Controllers
     {
         private readonly IUserLogic _userLogic = LogicFactory.LogicFactory.GUserLogic();
 
+        public   UserViewModel GetUser(string uid)
+        {
+            UserViewModel user = new UserViewModel
+            {
+                uid = _userLogic.GetUser(uid).uid,
+                Email = _userLogic.GetUser(uid).Email,
+               
+            };
+            return user;
+        }
        
         public IActionResult Login()
         {
@@ -25,10 +35,11 @@ namespace WebshopThiso.Controllers
             UserData userlog = new UserData();
             userlog.Email = user.Email;
             userlog.Passsword = user.password;
-            if (_userLogic.Login(userlog))
-            {
+            UserData UserCondition = _userLogic.Login(userlog);
+            if (UserCondition != null)
+            { 
                 var storage = new LocalStorage();
-                storage.Store("uid", userlog.uid);
+                storage.Store("uid", UserCondition.uid);
                 storage.Persist();
                 return RedirectToAction("index", "Home");
             }

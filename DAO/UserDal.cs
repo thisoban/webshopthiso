@@ -23,7 +23,7 @@ namespace DAL
             data.Postalcode = "anonymous";
             
             string query = "UPDATE user SET email = @email, password  =@password, Admin = @admin " +
-                           "WHERE id = @id";
+                           "WHERE uid = @uid";
            
             DALAcces.conn.Open();
             MySqlCommand command = new MySqlCommand(query, DALAcces.conn);
@@ -36,9 +36,10 @@ namespace DAL
             command.Parameters.Add(new MySqlParameter("@adres", data.Adres));
             command.Parameters.Add(new MySqlParameter("@city", data.City));
             command.Parameters.Add(new MySqlParameter("@postalcode", data.Postalcode));
+            command.Parameters.Add(new MySqlParameter("@uid", data.uid));
             command.ExecuteNonQuery();
 
-           // command.Parameters.Add()
+          
            return true;
         }
 
@@ -62,6 +63,27 @@ namespace DAL
             DALAcces.conn.Close();
             return data;
            
+        }
+        public  UserData GetuserdetailFromUid(string uid)
+        {
+            DALAcces.conn.Open();
+            UserData data = new UserData();
+            string query = "Select * FROM user WHERE uid = @uid";
+
+            MySqlCommand command = new MySqlCommand(query, DALAcces.conn);
+            command.Parameters.Add(new MySqlParameter("@uid", uid));
+
+            MySqlDataReader reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                data.uid = reader.GetString(1);
+                data.Email = reader.GetString(2);
+                data.Passsword = reader.GetString(3);
+
+            }
+            DALAcces.conn.Close();
+            return data;
+
         }
 
         public List<UserData> GetUsers()

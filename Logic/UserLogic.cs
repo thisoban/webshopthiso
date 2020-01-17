@@ -13,20 +13,21 @@ namespace Logic
     public class UserLogic : IUserLogic
     {
         private readonly IDalUser userDal = DalFactory.DalFactory.GUserDAl();
-        public bool Login(UserData user)
+        public UserData Login(UserData user)
         {
-            bool usercredentials = false;
+            UserData loginUserData = new UserData();
+          
             if (user.Email != null)
             {
                 if (user.Email == userDal.GetUserDetail(user).Email)
                 {
                     if (user.Passsword == userDal.GetUserDetail(user).Passsword)
                     {
-                        usercredentials = true;
+                        loginUserData = userDal.GetUserDetail(user);
                     }
                 }
             }
-            return usercredentials;
+            return loginUserData;
         }
 
         public bool Logout()
@@ -52,5 +53,7 @@ namespace Logic
 
             return userRole;
         }
+
+        public  UserData GetUser(string uid) => userDal.GetuserdetailFromUid(uid);
     }
 }

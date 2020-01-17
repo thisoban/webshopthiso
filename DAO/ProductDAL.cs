@@ -28,6 +28,7 @@ namespace DAL
                     data.Description = reader.GetString("Description");
                     data.Quantity = reader.GetInt32(3);
                     data.Price = reader.GetDecimal(4);
+                    data.Serialnumber = reader.GetInt32(5);
 
                 }
 
