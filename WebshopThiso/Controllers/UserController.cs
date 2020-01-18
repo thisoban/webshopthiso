@@ -85,6 +85,36 @@ namespace WebshopThiso.Controllers
             return View(profileuser);
         }
 
+        public IActionResult ProfileEdit()
+        {
+            string cookies = Request.Cookies["uid"];
+           UserViewModel user = new UserViewModel(_userLogic.profile(cookies));
+           return View(user);
+        }
+
+        [HttpPost]
+        public IActionResult Edit(UserViewModel user)
+        {
+            string cookies = Request.Cookies["uid"];
+            UserData UpUser = new UserData()
+            {
+                Email = user.Email,
+                Passsword = user.password,
+                Adres = user.Adres,
+                City = user.City,
+                Firstname = user.Firstname,
+                Surname = user.Surname,
+                Housenumber = user.housenumber,
+                Postalcode = user.Postalcode
+            };
+            if (_userLogic.UpdateUser(UpUser))
+            {
+                return RedirectToAction("Profile");
+            }
+
+            return ProfileEdit();
+        }
+
         public IActionResult Register()
         {
             return View();

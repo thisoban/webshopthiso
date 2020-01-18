@@ -13,5 +13,6 @@ namespace ILogic
         bool RemoveUser();
         UserData GetUser(string uid);
         UserData profile(string uid);
+        bool UpdateUser(UserData data);
    }
 }

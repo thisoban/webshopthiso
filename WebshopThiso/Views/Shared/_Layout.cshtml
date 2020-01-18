@@ -28,16 +28,6 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
-                <div class="dropdown">
-                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Dropdown button
-                    </button>
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <a class="dropdown-item" asp-controller="User" asp-action ="Profile">Action</a>
-                        @*<a class="dropdown-item"  asp-controller="" asp-action="prod">Another action</a>
-                        <a class="dropdown-item"  asp-action="#">Something else here</a>*@
-                    </div>
-                </div>
 
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
                     <ul class="navbar-nav flex-grow-1">
@@ -49,7 +39,7 @@
                         @if (@ViewBag.admin == "True")
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Product" asp-action="Products">Productsl</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Product" asp-action="ProductList">Products</a>
                             </li>
                         }
 
@@ -57,15 +47,40 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
+                        @if (@ViewBag.uid != null)
+                        {
+                            <div class="dropdown">
+                                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Dropdown button
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <a class="dropdown-item" asp-controller="User" asp-action="Profile">Profile</a>
+                                    @if (@ViewBag.admin == "False")
+                                    {
+                                        <a class="dropdown-item" asp-controller="Order" asp-action="Index">orders</a>
+                                    }
+                                    @if (@ViewBag.admin == "True")
+                                    {
+                                        <a class="dropdown-item" asp-action="#">Something else here</a>
+                                    }
 
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Login">login</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="LogOut">Logout</a>
-                        </li>
+                                </div>
+                            </div>
+                        }
 
+                        @if (@ViewBag.uid == null)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Login">login</a>
+                            </li>
+                        }
+                        @if (@ViewBag.uid != null)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="LogOut">Logout</a>
+                            </li>
 
+                        }
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Product" asp-action="CreateProduct">add a product</a>
                         </li>

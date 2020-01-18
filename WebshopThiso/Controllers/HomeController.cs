@@ -34,6 +34,7 @@ namespace WebshopThiso.Controllers
         public IActionResult Index()
         {
             ViewBag.admin = Request.Cookies["admin"];
+            ViewBag.uid = Request.Cookies["uid"];
             return View();
         }
 

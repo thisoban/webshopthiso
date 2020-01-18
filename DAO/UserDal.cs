@@ -247,34 +247,87 @@ namespace DAL
 
         }
 
-        public bool UpdateUser(UserData data)
+        public bool UpdateCustomer(UserData data)
         {
-            string query = "UPDATE Customer SET  Firstname = @Firstname, Surname = @Surname, Adres = @Adres, Housenumber = @HouseNumber, Postalcode = @Postalcode, City = @City WHERE Email = @email";
+            bool booltje = false;
+            string query = "UPDATE Customer SET ";                //  + " Firstname = @Firstname, Surname = @Surname, Adres = @Adres, Housenumber = @HouseNumber, Postalcode = @Postalcode, City = @City WHERE Email = @email";
             DALAcces.conn.Open();
             MySqlCommand command = new MySqlCommand(query, DALAcces.conn);
-            command.Parameters.Add(new MySqlParameter("@email", data.Email));
-            command.Parameters.Add(new MySqlParameter("@Firstname", data.Firstname));
-            command.Parameters.Add(new MySqlParameter("@Surname", data.Surname));
-            command.Parameters.Add(new MySqlParameter("@Adres", data.Adres));
-            command.Parameters.Add(new MySqlParameter("@HouseNumber", data.Housenumber));
-            command.Parameters.Add(new MySqlParameter("@Postalcode", data.Postalcode));
-            command.Parameters.Add(new MySqlParameter("@city", data.City));
+            if (data.Email.Length > 0)
+            {
+                query += "email = @email,";
+                command.Parameters.Add(new MySqlParameter("@email", data.Email));
+            }
+            if (data.Firstname.Length > 0)
+            {
+                query += "Firstname = @Firstname,";
+                command.Parameters.Add(new MySqlParameter("@Firstname", data.Firstname));
+            }
+            if (data.Surname.Length > 0)
+            {
+                query += "Surname = @Surname,";
+                command.Parameters.Add(new MySqlParameter("@Surname", data.Surname));
+            }
+            if (data.Adres.Length > 0)
+            {
+                query += "Adres = @Adres,";
+                command.Parameters.Add(new MySqlParameter("@Adres", data.Adres));
+            }
+            if (data.Housenumber.Length > 0)
+            {
+                query += "HouseNumber = @HouseNumber,";
+                command.Parameters.Add(new MySqlParameter("@HouseNumber", data.Housenumber));
+            }
+            if (data.Postalcode.Length > 0)
+            {
+                query += "Postalcode = @Postalcode,";
+                command.Parameters.Add(new MySqlParameter("@Postalcode", data.Postalcode));
+            }
+            if (data.City.Length > 0)
+            {
+                query += "City = @City";
+                command.Parameters.Add(new MySqlParameter("@city", data.City));
+            }
+            
+           query = query.Remove(query.Length - 1);
+           query += " WHERE uid = @uid";
+           command.Parameters.Add(new MySqlParameter("@uid", data.uid));
+           try
+           {
+               if (command.ExecuteNonQuery() < 0)
+               {
 
-            try
-            {
-                if (command.ExecuteNonQuery() < 0)
-                {
-                    DALAcces.conn.Close();
-                    return false;
-                }
-                DALAcces.conn.Close();
-                return true;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                throw;
-            }
+                   booltje = false;
+               }
+               else
+               {
+                   booltje = true;
+               }
+
+
+           }
+           catch (Exception e)
+           {
+               Console.WriteLine(e);
+               throw;
+           }
+           finally
+           {
+               DALAcces.conn.Close();
+            
+           }
+           return booltje;
+        }
+
+        public bool UpdateUser(UserData user)
+        {
+            string query = "UPDATE `user` SET email = @email, password = @password, Admin =[value-5] WHERE uid = @uid";
+            MySqlCommand command = new MySqlCommand(query, DALAcces.conn);
+            command.Parameters.Add(new MySqlParameter("@uid", user.uid));
+            command.Parameters.Add(new MySqlParameter("@email", user.uid));
+            command.Parameters.Add(new MySqlParameter("@password", user.uid));
+
+            return false;
         }
         private string GuidMaker()
         {

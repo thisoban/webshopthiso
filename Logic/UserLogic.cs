@@ -58,6 +58,15 @@ namespace Logic
             return userRole;
         }
 
+        public bool UpdateUser(UserData data)
+        {
+            if (_userDal.UpdateUser(data))
+            {
+                return true;
+            }
+
+            return false;
+        }
         public  UserData GetUser(string uid) => _userDal.GetuserdetailFromUid(uid);
     }
 }

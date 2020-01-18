@@ -9,9 +9,10 @@ namespace IDAL
         bool InsertUser(UserData newUser);
         UserData GetUserByEmail(UserData data);
         List<UserData> GetUsers();
-        bool UpdateUser(UserData data);
+        bool UpdateCustomer(UserData data);
         bool DeleteUser(UserData data);
         UserData GetuserdetailFromUid(string uid);
+        bool UpdateUser(UserData data);
 
     }
 }
