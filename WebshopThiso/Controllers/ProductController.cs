@@ -11,20 +11,22 @@ namespace WebshopThiso.Controllers
     {
 
         private readonly IProductLogic product = LogicFactory.LogicFactory.GProductLogic();
-        [Route("Product/Products")] 
-        
-        public IActionResult Products()
+
+        [Route("Product/Products")]
+
+      
+        public IActionResult ProductList()
         {
-            var pc1 = new List<ProductViewModel>();
+            var ListProducts = new List<ProductViewModel>();
            
             foreach (var product in product.GetProducts())
             {
-                var productje = new ProductViewModel( product.Name, product.Price, product.Description, product.Quantity, product.Serialnumber);
-                pc1.Add(productje);
+                var products = new ProductViewModel( product.Name, product.Price, product.Description, product.Quantity, product.Serialnumber);
+                ListProducts.Add(products);
             }
            
           
-            return View(pc1);
+            return View(ListProducts);
         }
 
         public IActionResult Detail()

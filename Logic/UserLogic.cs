@@ -19,11 +19,11 @@ namespace Logic
           
             if (user.Email != null)
             {
-                if (user.Email == _userDal.GetUserDetail(user).Email)
+                if (user.Email == _userDal.GetUserByEmail(user).Email)
                 {
-                    if (user.Passsword == _userDal.GetUserDetail(user).Passsword)
+                    if (user.Passsword == _userDal.GetUserByEmail(user).Passsword)
                     {
-                        loginUserData = _userDal.GetUserDetail(user);
+                        loginUserData = _userDal.GetUserByEmail(user);
                     }
                 }
             }
@@ -43,8 +43,7 @@ namespace Logic
 
         public bool Register(UserData user)
         {
-            
-            throw new NotImplementedException();
+            return (_userDal.InsertUser(user));
         }
         [Authorize(Roles = "admin")]
         public bool RemoveUser()

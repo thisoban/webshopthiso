@@ -2,6 +2,7 @@
 using System.Buffers.Text;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data;
 using System.Linq.Expressions;
 using System.Text;
 using DataModel;
@@ -13,16 +14,55 @@ namespace DAL
    public class UserDal : IDalUser
     {
        private readonly DAL DALAcces = new DAL();
+
+       private void DeleteCustomer(UserData data)
+       {
+           data.Adres = "anonymous";
+           data.City = "anonymous";
+           data.Firstname = "anonymous";
+           data.Surname = "anonymous";
+           data.Housenumber = "anonymous";
+           data.Postalcode = "anonymous";
+           data.City = "anonymous";
+
+           string query = "UPDATE customer SET Email = @email , Firstname = @firstname, Surname  = @surname, Adres = @adres, City = @city, Postalcode = @postalcode " +
+                          "WHERE uid = @uid";
+
+            DALAcces.conn.Open();
+            MySqlCommand command = new MySqlCommand(query, DALAcces.conn);
+            command.Parameters.Add(new MySqlParameter("@uid", data.uid));
+            command.Parameters.Add(new MySqlParameter("@email", data.Email));
+            command.Parameters.Add(new MySqlParameter("@firstname", data.Firstname));
+            command.Parameters.Add(new MySqlParameter("@surname", data.Surname));
+            command.Parameters.Add(new MySqlParameter("@housenumber", data.Housenumber));
+            command.Parameters.Add(new MySqlParameter("@adres", data.Adres));
+            command.Parameters.Add(new MySqlParameter("@city", data.City));
+            command.Parameters.Add(new MySqlParameter("@postalcode", data.Postalcode));
+            try
+            {
+                command.ExecuteNonQuery();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+            finally
+            {
+                DALAcces.conn.Close();
+            }
+
+       }
         public bool DeleteUser(UserData data)
         {
-            data.Adres = "anonymous";
-            data.City = "anonymous";
-            data.Firstname= "anonymous";
-            data.Surname = "anonymous";
-            data.Housenumber = "anonymous";
-            data.Postalcode = "anonymous";
+            if (data.Admin == false)
+            {
+                DeleteCustomer(data);
+            }
+            data.Email = "anonymous";
+            data.Passsword = "anonymous";
             
-            string query = "UPDATE user SET email = @email, password  =@password, Admin = @admin " +
+            string query = "UPDATE user SET email = @email, password  = @password, Admin = @admin " +
                            "WHERE uid = @uid";
            
             DALAcces.conn.Open();
@@ -30,46 +70,66 @@ namespace DAL
 
             command.Parameters.Add(new MySqlParameter("@email", data.Email ));
             command.Parameters.Add(new MySqlParameter("@password", data.Passsword));
-            command.Parameters.Add(new MySqlParameter("@firstname", data.Firstname));
-            command.Parameters.Add(new MySqlParameter("@surname", data.Surname));
-            command.Parameters.Add(new MySqlParameter("@housenumber", data.Housenumber));
-            command.Parameters.Add(new MySqlParameter("@adres", data.Adres));
-            command.Parameters.Add(new MySqlParameter("@city", data.City));
-            command.Parameters.Add(new MySqlParameter("@postalcode", data.Postalcode));
+         
             command.Parameters.Add(new MySqlParameter("@uid", data.uid));
-            command.ExecuteNonQuery();
-
+            try
+            {
+                command.ExecuteNonQuery();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+            finally
+            {
+                DALAcces.conn.Close();
+            }
           
            return true;
         }
 
-        public UserData GetUserDetail(UserData uid)
+        public UserData GetUserByEmail(UserData login)
         {
             DALAcces.conn.Open();
             UserData data = new UserData();
-            string query = "Select * FROM user WHERE uid = @uid";
+            string query = "Select * FROM user WHERE email = @email";
 
             MySqlCommand command = new MySqlCommand(query, DALAcces.conn);
-            command.Parameters.Add(new MySqlParameter("@uid", uid.uid));
+            command.Parameters.Add(new MySqlParameter("@email", login.Email));
 
             MySqlDataReader reader = command.ExecuteReader();
-            while (reader.Read())
+            try
             {
-                
-                data.Email = reader.GetString(2);
-                data.Passsword = reader.GetString(3);
-                data.Admin = reader.GetBoolean(5);
+                while (reader.Read())
+                {
+
+                    data.Email = reader.GetString(2);
+                    data.uid = reader.GetString(1);
+                    data.Passsword = reader.GetString(3);
+                    data.Admin = reader.GetBoolean(4);
+                }
             }
-            DALAcces.conn.Close();
-            if (data.Admin == false)
+            catch (Exception e)
             {
-             return  GetUserDetail(uid);
+                Console.WriteLine(e);
+                throw;
             }
+            finally
+            {
+                DALAcces.conn.Close();
+            }
+         
+          
             return data;
            
         }
         public  UserData GetuserdetailFromUid(string uid)
         {
+            if (DALAcces.conn.State == ConnectionState.Open)
+            {
+                DALAcces.conn.Close();
+            }
             DALAcces.conn.Open();
             UserData data = new UserData();
             string query = "Select * FROM user WHERE uid = @uid";
@@ -78,18 +138,28 @@ namespace DAL
             command.Parameters.Add(new MySqlParameter("@uid", uid));
 
             MySqlDataReader reader = command.ExecuteReader();
-            while (reader.Read())
+            try
             {
-                data.Email = reader.GetString(2);
-                data.Passsword = reader.GetString(3);
-                data.Admin = reader.GetBoolean(5);
+                while (reader.Read())
+                {
+                    data.Email = reader.GetString(2);
+                    data.Passsword = reader.GetString(3);
+                   
 
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+            finally
+            {
+                DALAcces.conn.Close();
             }
 
-           
-            DALAcces.conn.Close();
+            GetCustomerDetail(data);
             return data;
-
         }
 
         public List<UserData> GetUsers()
@@ -127,21 +197,22 @@ namespace DAL
 
         public bool InsertUser(UserData newUser)
         {
-            string query = "INSERT INTO User(uid, email, password, admin, Role_id) " +
-                           "VALUES (@id, @email,@password,@quantity,@sellprice,@serialnumber)";
+            newUser.uid = GuidMaker();
+            string query = "INSERT INTO User(uid, email, password, admin) " +
+                           "VALUES (@uid,@email, @password,@admin)";
             DALAcces.conn.Open();
             MySqlCommand command = new MySqlCommand(query, DALAcces.conn);
             command.Parameters.Add(new MySqlParameter("@email", newUser.Email));
             command.Parameters.Add(new MySqlParameter("@password", newUser.Passsword));
             command.Parameters.Add(new MySqlParameter("@admin", newUser.Admin));
-            command.Parameters.Add(new MySqlParameter("@id", GuidMaker()));
-            InsertCustomerDetail(newUser);
+            command.Parameters.Add (new MySqlParameter("@uid", newUser.uid));
+            
             try
             {
-                command.ExecuteNonQuery();
                 if (command.ExecuteNonQuery().Equals(1))
                 {
                     DALAcces.conn.Close();
+                    InsertCustomerDetail(newUser);
                     return true;
                 }
 
@@ -157,15 +228,10 @@ namespace DAL
             }
             return false;
         }
-
-        private string GuidMaker()
-        {
-            return Convert.ToBase64String(Guid.NewGuid().ToByteArray()).Replace("==", "");
-        }
         public void InsertCustomerDetail(UserData user)
         {
             string query = "INSERT INTO customer (uid, Email, Firstname, Surname, Adres, Housenumber, Postalcode, city) " +
-                           "VALUES ( @id, @Email,@Firstname,@Surname,@Adres,@Housenumber,@Postalcode,@City)";
+                           "VALUES ( @uid, @Email,@Firstname,@Surname,@Adres,@Housenumber,@Postalcode,@City)";
             DALAcces.conn.Open();
             MySqlCommand command = new MySqlCommand(query, DALAcces.conn);
             command.Parameters.Add(new MySqlParameter("@Email", user.Email));
@@ -174,8 +240,8 @@ namespace DAL
             command.Parameters.Add(new MySqlParameter("@Adres", user.Adres));
             command.Parameters.Add(new MySqlParameter("@Housenumber", user.Housenumber));
             command.Parameters.Add(new MySqlParameter("@Postalcode", user.Postalcode));
-            command.Parameters.Add(new MySqlParameter("@City", user.City)); 
-            command.Parameters.Add(new MySqlParameter("@id", user.uid));
+            command.Parameters.Add(new MySqlParameter("@City", user.City));
+            command.Parameters.Add(new MySqlParameter("@uid", user.uid));
             command.ExecuteNonQuery();
             DALAcces.conn.Close();
 
@@ -210,50 +276,43 @@ namespace DAL
                 throw;
             }
         }
-
-        private UserData GetCustomerDetail(string uid)
+        private string GuidMaker()
         {
-            UserData data = new UserData();
+            return Convert.ToBase64String(Guid.NewGuid().ToByteArray()).Replace("==", "");
+        }
+      
+
+        private UserData GetCustomerDetail(UserData uid)
+        {
+           
             string query = "SELECT * FROM customer where uid = @uid";
             DALAcces.conn.Open();
             MySqlCommand command = new MySqlCommand(query, DALAcces.conn);
             command.Parameters.Add(new MySqlParameter("uid", uid));
             MySqlDataReader reader = command.ExecuteReader();
-            while (reader.Read())
+            try
             {
-                data.Firstname = reader.GetString(4);
-                data.Surname = reader.GetString(5);
-                data.Adres = reader.GetString(6);
-                data.Housenumber = reader.GetString(7);
-                data.Postalcode = reader.GetString(8);
-                data.City = reader.GetString(9);
-            }
+                while (reader.Read())
+                {
+                    if (reader.GetString("email") == uid.Email)
+                    {
+                        uid.Firstname = reader.GetString(3);
+                        uid.Surname = reader.GetString(4);
+                        uid.Adres = reader.GetString(5);
+                        uid.Housenumber = reader.GetString(6);
+                        uid.Postalcode = reader.GetString(7);
+                        uid.City = reader.GetString(8);
+                    }
 
-            return data;
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+            return uid;
         }
-        private bool CheckAdmin(UserData user)
-        {
-             int admin = 0;
-             string query = "SELECT admin FROM user WHERE Id = @IdUser";
-             DALAcces.conn.Open();
-             MySqlCommand command = new MySqlCommand(query, DALAcces.conn);
-             command.Parameters.Add(new MySqlParameter("@IdUser", user.IdUser));
-             MySqlDataReader reader = command.ExecuteReader();
-             while (reader.Read())
-             {
-                admin = reader.GetInt32(4);
-             }
-             if (admin == 1)
-             {
-                 user.Admin = true;
-                 return true;
-             }
-             if (admin == 0)
-             {
-                 user.Admin = false;
-                 return false;
-             }
-             return false;
-        }
+       
     }
 }

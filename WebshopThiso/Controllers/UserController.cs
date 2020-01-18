@@ -5,10 +5,13 @@ using System.Threading.Tasks;
 using DataModel;
 using Hanssens.Net;
 using ILogic;
+using Microsoft.AspNetCore.CookiePolicy;
 using Newtonsoft.Json;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Razor.Language.CodeGeneration;
 using RestSharp;
+using RestSharp.Extensions;
 using WebshopThiso.Models;
 
 namespace WebshopThiso.Controllers
@@ -32,25 +35,38 @@ namespace WebshopThiso.Controllers
         {
             return View();
         }
+      
         [HttpPost]
-        public IActionResult Login(UserViewModel user)
+        public IActionResult Login(UserLoginViewModel user)
         {
-            UserData userlog = new UserData();
-            userlog.Email = user.Email;
-            userlog.Passsword = user.password;
-            UserData UserCondition = _userLogic.Login(userlog);
-            if (UserCondition != null)
+            if (ModelState.IsValid)
             {
-                HttpCookie myCookie = new HttpCookie();
-                DateTime now = DateTime.Now;
-                myCookie.Value = now.ToString();
-                myCookie.Expires = now.AddHours(24);
-                Response.Cookies.Append("uid", UserCondition.uid);
-                return RedirectToAction("index", "Home");
+                UserData userlog = new UserData();
+                userlog.Email = user.email;
+                userlog.Passsword = user.password;
+                UserData UserCondition = _userLogic.Login(userlog);
+                if (UserCondition != null)
+                {
+                    HttpCookie myCookie = new HttpCookie();
+                    DateTime now = DateTime.Now;
+                    myCookie.Value = now.ToString();
+                    myCookie.Expires = now.AddHours(24);
+                    Response.Cookies.Append("uid", UserCondition.uid);
+                    Response.Cookies.Append("admin", UserCondition.Admin.ToString());
+                    return RedirectToAction("index", "Home");
+                }
             }
-            return View(_userLogic.Login(userlog));
+
+            return View(user);
         }
 
+        public IActionResult LogOut()
+        {
+            
+            Response.Cookies.Delete("uid");
+            Response.Cookies.Delete("admin");
+            return RedirectToAction("Login");
+        }
         public IActionResult Profile()
         {
             string cookie =  Request.Cookies["uid"];
@@ -59,10 +75,37 @@ namespace WebshopThiso.Controllers
             {
                  uid = _userLogic.GetUser(cookie).uid,
                  Email = _userLogic.GetUser(cookie).Email,
+                 password = _userLogic.GetUser(cookie).Passsword,
+                 Adres = _userLogic.GetUser(cookie).Adres,
+                 Firstname = _userLogic.GetUser(cookie).Firstname,
+                 City = _userLogic.GetUser(cookie).City,
                  
             };
 
             return View(profileuser);
+        }
+
+        public IActionResult Register()
+        {
+            return View();
+        }
+        [HttpPost]
+        public IActionResult Register(UserViewModel RUser)
+        {
+            UserData user = new UserData()
+            {
+                Email = RUser.Email,
+                Passsword = RUser.password,
+                Firstname =  RUser.Firstname,
+                Surname =  RUser.Surname,
+                Adres =  RUser.Adres,
+                Postalcode =  RUser.Postalcode,
+                City =  RUser.City,
+                Housenumber = RUser.housenumber
+
+            };
+            _userLogic.Register(user);
+            return View();
         }
     }
 }

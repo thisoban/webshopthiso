@@ -65,6 +65,7 @@ namespace DAL
                         Id = reader.GetInt32("id"),
                         Name = reader.GetString("Name"),
                         Price = reader.GetDecimal("Sellprice"),
+                        Quantity = reader.GetInt32("Quantity"),
                         Serialnumber = reader.GetInt32("Serialnumber")
                     };
                     // save uitlening to the list

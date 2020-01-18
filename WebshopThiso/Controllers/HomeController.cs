@@ -22,7 +22,7 @@ namespace WebshopThiso.Controllers
             {
                 uid = "";
             }
-
+            
             return uid;
         }
 
@@ -33,9 +33,7 @@ namespace WebshopThiso.Controllers
 
         public IActionResult Index()
         {
-            var storage = new LocalStorage();
-            storage.Store("uid", "");
-            storage.Persist();
+            ViewBag.admin = Request.Cookies["admin"];
             return View();
         }
 
