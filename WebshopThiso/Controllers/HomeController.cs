@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Diagnostics;
-using Hanssens.Net;
 using WebshopThiso.Models;
 
 namespace WebshopThiso.Controllers
@@ -11,20 +10,7 @@ namespace WebshopThiso.Controllers
     {
         private readonly ILogger<HomeController> _logger;
 
-        public static string GetUidFromLocatStorage()
-        {
-            string uid = null;
-            if (String.IsNullOrEmpty(new LocalStorage().Get("uid").ToString()))
-            {
-                uid = new LocalStorage().Get("uid").ToString();
-            }
-            else
-            {
-                uid = "";
-            }
-            
-            return uid;
-        }
+       
 
         public HomeController(ILogger<HomeController> logger)
         {

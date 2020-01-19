@@ -1,4 +1,5 @@
-﻿@model IEnumerable<WebshopThiso.Models.ProductViewModel>
+﻿@using Microsoft.CodeAnalysis.CSharp.Syntax
+@model IEnumerable<WebshopThiso.Models.ProductViewModel>
 
 @{
     ViewData["Title"] = "ProductList";
@@ -42,11 +43,19 @@
             <td>
                 @Html.DisplayFor(modelItem => item.SerialNumber)
             </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { item.SerialNumber/* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Detail", new {item.SerialNumber}) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-            </td>
+            @if (ViewBag.admin == "True")
+            {
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { item.SerialNumber/* id=item.PrimaryKey */ }) |
+                    @Html.ActionLink("Details", "Detail", new { item.SerialNumber }) |
+                    @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                </td>
+            }
+            else
+            {
+                //add item to cart
+            }
+            
         </tr>
 }
     </tbody>

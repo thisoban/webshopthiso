@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using DataModel;
-using Hanssens.Net;
 using ILogic;
 using Microsoft.AspNetCore.CookiePolicy;
 using Newtonsoft.Json;
