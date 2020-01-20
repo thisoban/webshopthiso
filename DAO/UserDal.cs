@@ -158,7 +158,10 @@ namespace DAL
                 DALAcces.conn.Close();
             }
 
-            GetCustomerDetail(data);
+           if(data.Admin == false)
+           {
+               GetCustomerDetail(data);
+            }
             return data;
         }
 
@@ -242,8 +245,20 @@ namespace DAL
             command.Parameters.Add(new MySqlParameter("@Postalcode", user.Postalcode));
             command.Parameters.Add(new MySqlParameter("@City", user.City));
             command.Parameters.Add(new MySqlParameter("@uid", user.uid));
-            command.ExecuteNonQuery();
-            DALAcces.conn.Close();
+            try
+            {
+                command.ExecuteNonQuery();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+            finally
+            {
+                DALAcces.conn.Close();
+            }
+           
 
         }
 
@@ -321,13 +336,32 @@ namespace DAL
 
         public bool UpdateUser(UserData user)
         {
-            string query = "UPDATE `user` SET email = @email, password = @password, Admin =[value-5] WHERE uid = @uid";
+            bool updateuser = false;
+            DALAcces.conn.Open();
+            string query = "UPDATE `user` SET email = @email, password = @password, Admin = @admin WHERE uid = @uid";
             MySqlCommand command = new MySqlCommand(query, DALAcces.conn);
             command.Parameters.Add(new MySqlParameter("@uid", user.uid));
-            command.Parameters.Add(new MySqlParameter("@email", user.uid));
-            command.Parameters.Add(new MySqlParameter("@password", user.uid));
+            command.Parameters.Add(new MySqlParameter("@email", user.Email));
+            command.Parameters.Add(new MySqlParameter("@password", user.Passsword));
+            command.Parameters.Add(new MySqlParameter("@Admin", user.Admin));
+            try
+            {
+                if (command.ExecuteNonQuery() > 0)
+                {
+                    updateuser = true;
+                }
 
-            return false;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+            finally
+            {
+                DALAcces.conn.Close();
+            }
+            return updateuser;
         }
         private string GuidMaker()
         {
@@ -338,10 +372,10 @@ namespace DAL
         private UserData GetCustomerDetail(UserData uid)
         {
            
-            string query = "SELECT * FROM customer where uid = @uid";
+            string query = "SELECT * FROM customer WHERE uid = @uid";
             DALAcces.conn.Open();
             MySqlCommand command = new MySqlCommand(query, DALAcces.conn);
-            command.Parameters.Add(new MySqlParameter("uid", uid));
+            command.Parameters.Add(new MySqlParameter("@uid", uid));
             MySqlDataReader reader = command.ExecuteReader();
             try
             {

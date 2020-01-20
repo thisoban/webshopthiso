@@ -97,6 +97,7 @@ namespace WebshopThiso.Controllers
             string cookies = Request.Cookies["uid"];
             UserData UpUser = new UserData()
             {
+                uid = cookies,
                 Email = user.Email,
                 Passsword = user.password,
                 Adres = user.Adres,
@@ -111,7 +112,7 @@ namespace WebshopThiso.Controllers
                 return RedirectToAction("Profile");
             }
 
-            return ProfileEdit();
+            return RedirectToAction("ProfileEdit");
         }
 
         public IActionResult Register()
