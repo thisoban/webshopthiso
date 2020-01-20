@@ -69,9 +69,10 @@ namespace WebshopThiso.Controllers
         public IActionResult Profile()
         {
             string cookie =  Request.Cookies["uid"];
-
+            ViewBag.admin = Request.Cookies["admin"];
             UserViewModel profileuser =  new UserViewModel()
             {
+               
                  uid = _userLogic.GetUser(cookie).uid,
                  Email = _userLogic.GetUser(cookie).Email,
                  password = _userLogic.GetUser(cookie).Passsword,
@@ -87,6 +88,7 @@ namespace WebshopThiso.Controllers
         public IActionResult ProfileEdit()
         {
             string cookies = Request.Cookies["uid"];
+            ViewBag.admin = cookies;
            UserViewModel user = new UserViewModel(_userLogic.profile(cookies));
            return View(user);
         }

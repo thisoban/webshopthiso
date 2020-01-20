@@ -22,8 +22,8 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.password)
         </dd>
-        @if (Model.Firstname != null)
-        {
+        @if (ViewBag.admin == "False")
+    {
             <dt class="col-sm-2">
                 @Html.DisplayNameFor(model => model.Firstname)
             </dt>

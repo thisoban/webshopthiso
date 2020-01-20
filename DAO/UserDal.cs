@@ -144,9 +144,10 @@ namespace DAL
                 {
                     data.Email = reader.GetString(2);
                     data.Passsword = reader.GetString(3);
-                   
+                    data.Admin = reader.GetBoolean("Admin");
 
                 }
+                reader.Close();
             }
             catch (Exception e)
             {
@@ -155,14 +156,20 @@ namespace DAL
             }
             finally
             {
+                data.uid = uid;
                 DALAcces.conn.Close();
             }
 
            if(data.Admin == false)
            {
-               GetCustomerDetail(data);
-            }
-            return data;
+               data.Firstname = GetCustomerDetail(data).Firstname;
+               data.Surname = GetCustomerDetail(data).Surname;
+               data.Adres =  GetCustomerDetail(data).Adres;
+               data.Postalcode =  GetCustomerDetail(data).Postalcode;
+               data.Housenumber =  GetCustomerDetail(data).Housenumber;
+               data.City =  GetCustomerDetail(data).City;
+           }
+           return data;
         }
 
         public List<UserData> GetUsers()
@@ -372,10 +379,10 @@ namespace DAL
         private UserData GetCustomerDetail(UserData uid)
         {
            
-            string query = "SELECT * FROM customer WHERE uid = @uid";
+            string query = "SELECT * FROM customer WHERE email = @email";
             DALAcces.conn.Open();
             MySqlCommand command = new MySqlCommand(query, DALAcces.conn);
-            command.Parameters.Add(new MySqlParameter("@uid", uid));
+            command.Parameters.Add(new MySqlParameter("@email", uid.Email));
             MySqlDataReader reader = command.ExecuteReader();
             try
             {
@@ -383,12 +390,12 @@ namespace DAL
                 {
                     if (reader.GetString("email") == uid.Email)
                     {
-                        uid.Firstname = reader.GetString(3);
-                        uid.Surname = reader.GetString(4);
-                        uid.Adres = reader.GetString(5);
-                        uid.Housenumber = reader.GetString(6);
-                        uid.Postalcode = reader.GetString(7);
-                        uid.City = reader.GetString(8);
+                        uid.Firstname = reader.GetString("Firstname");
+                        uid.Surname = reader.GetString("Surname");
+                        uid.Adres = reader.GetString("Adres");
+                        uid.Housenumber = reader.GetString( "Housenumber");
+                        uid.Postalcode = reader.GetString("Postalcode");
+                        uid.City = reader.GetString("City");
                     }
 
                 }
@@ -397,6 +404,10 @@ namespace DAL
             {
                 Console.WriteLine(e);
                 throw;
+            }
+            finally
+            {
+                DALAcces.conn.Close();
             }
             return uid;
         }
