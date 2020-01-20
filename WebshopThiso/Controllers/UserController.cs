@@ -99,8 +99,11 @@ namespace WebshopThiso.Controllers
         public IActionResult Edit(UserViewModel user)
         {
             string cookies = Request.Cookies["uid"];
+            string admin = Request.Cookies["admin"];
+           
             UserData UpUser = new UserData()
             {
+              
                 uid = cookies,
                 Email = user.Email,
                 Passsword = user.password,
@@ -111,6 +114,10 @@ namespace WebshopThiso.Controllers
                 Housenumber = user.housenumber,
                 Postalcode = user.Postalcode
             };
+            if (admin == "True")
+            {
+                UpUser.Admin = true;
+            }
             if (_userLogic.UpdateUser(UpUser))
             {
                 return RedirectToAction("Profile");

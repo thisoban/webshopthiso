@@ -1,0 +1,60 @@
+﻿@model IEnumerable<WebshopThiso.Models.ProductViewModel>
+
+@{
+    ViewData["Title"] = "Products";
+}
+
+<h1>Products</h1>
+
+
+@foreach (ProductViewModel product in Model)
+{
+    <div class="container">
+        @Html.HiddenFor(model => product.SerialNumber)
+        <div class="col-xs-6 col-sm-3">
+            <h4>@product.Name</h4>
+        </div>
+        <div class="col-xs-6 col-sm-3">
+            <medium>@product.Description</medium>
+        </div>
+        
+
+        <div class="container">
+            <div class="row">
+                <div class="block span3">
+                    <div class="product">
+                        <img src="/images/rubber_duck.jfif">
+                        <div class="buttons">
+                            <a class="buy btn btn-large btn-info" href="#"><i class="icon-shopping-cart"></i> Add to Cart</a>
+                            <a class="preview btn btn-large btn-info" href="#"><i class="icon-eye-open"></i> View item</a>
+                        </div>
+                    </div>
+
+                    <div class="info">
+                       
+                        <span class="description">
+                            @product.Description
+                        </span>
+                        <span class="price">$62.97</span>
+                        <a class="btn btn-info pull-right" href="#"><i class="icon-shopping-cart"></i> Buy Now</a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="align-content-center">
+            @using (Html.BeginForm("Buy", "Cart", FormMethod.Get))
+            {
+                <input type="number" name="quantity" min="1" max="5">
+                <input type="hidden" name="id" value="@product.SerialNumber"/>
+                @Html.HiddenFor(model => product.SerialNumber)
+                <input class="btn btn-light" type="submit" value=" voeg toe aan winkelwagen"/>
+            }
+
+        </div>
+
+
+
+
+    </div>
+}

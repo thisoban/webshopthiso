@@ -12,9 +12,9 @@ namespace WebshopThiso.Controllers
 
         private readonly IProductLogic product = LogicFactory.LogicFactory.GProductLogic();
 
-        [Route("Product/Products")]
-
-      
+        
+        [Route("Product/ProductsList")]
+       
         public IActionResult ProductList()
         {
             var ListProducts = new List<ProductViewModel>();
@@ -28,7 +28,23 @@ namespace WebshopThiso.Controllers
           
             return View(ListProducts);
         }
-
+        [Route("Product/Products")]
+        public IActionResult products()
+        {
+            List<ProductViewModel>products = new List<ProductViewModel>();
+            
+            foreach (var listproduct in product.GetProducts())
+            {
+                ProductViewModel webProduct = new ProductViewModel();
+                webProduct.Name = listproduct.Name;
+                webProduct.Description = listproduct.Description;
+                webProduct.Price = listproduct.Price;
+                webProduct.Quantity = listproduct.Quantity;
+                webProduct.SerialNumber = listproduct.Serialnumber;
+                products.Add(webProduct);
+            }
+            return View(products);
+        }
         public IActionResult Detail()
         {
             int id = 6;

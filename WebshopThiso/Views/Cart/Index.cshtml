@@ -32,13 +32,17 @@
             <td>
                 @Html.DisplayNameFor(model => model.Product.Name)
             </td>
+
+            <td>
+                @Html.DisplayNameFor(model => model.Product.Price)
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Quantity)
             </td>
 
             <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+
+                @Html.ActionLink("Details", "Detail", "product", new { item.Product.SerialNumber }) |
                 @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
             </td>
         </tr>
