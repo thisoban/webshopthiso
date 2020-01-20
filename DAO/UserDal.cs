@@ -272,48 +272,17 @@ namespace DAL
         public bool UpdateCustomer(UserData data)
         {
             bool booltje = false;
-            string query = "UPDATE Customer SET ";                //  + " Firstname = @Firstname, Surname = @Surname, Adres = @Adres, Housenumber = @HouseNumber, Postalcode = @Postalcode, City = @City WHERE Email = @email";
+            string query = "UPDATE Customer SET  Firstname = @Firstname, Surname = @Surname, Adres = @Adres, Housenumber = @HouseNumber, Postalcode = @Postalcode, City = @City WHERE uid = @uid";
             DALAcces.conn.Open();
             MySqlCommand command = new MySqlCommand(query, DALAcces.conn);
-            if (data.Email.Length > 0)
-            {
-                query += "email = @email,";
                 command.Parameters.Add(new MySqlParameter("@email", data.Email));
-            }
-            if (data.Firstname.Length > 0)
-            {
-                query += "Firstname = @Firstname,";
                 command.Parameters.Add(new MySqlParameter("@Firstname", data.Firstname));
-            }
-            if (data.Surname.Length > 0)
-            {
-                query += "Surname = @Surname,";
                 command.Parameters.Add(new MySqlParameter("@Surname", data.Surname));
-            }
-            if (data.Adres.Length > 0)
-            {
-                query += "Adres = @Adres,";
                 command.Parameters.Add(new MySqlParameter("@Adres", data.Adres));
-            }
-            if (data.Housenumber.Length > 0)
-            {
-                query += "HouseNumber = @HouseNumber,";
                 command.Parameters.Add(new MySqlParameter("@HouseNumber", data.Housenumber));
-            }
-            if (data.Postalcode.Length > 0)
-            {
-                query += "Postalcode = @Postalcode,";
                 command.Parameters.Add(new MySqlParameter("@Postalcode", data.Postalcode));
-            }
-            if (data.City.Length > 0)
-            {
-                query += "City = @City";
                 command.Parameters.Add(new MySqlParameter("@city", data.City));
-            }
-            
-           query = query.Remove(query.Length - 1);
-           query += " WHERE uid = @uid";
-           command.Parameters.Add(new MySqlParameter("@uid", data.uid));
+                command.Parameters.Add(new MySqlParameter("@uid", data.uid));
            try
            {
                if (command.ExecuteNonQuery() < 0)
@@ -367,6 +336,14 @@ namespace DAL
             finally
             {
                 DALAcces.conn.Close();
+            }
+
+            if (user.Admin == false)
+            {
+                if (UpdateCustomer(user))
+                {
+                    updateuser = true;
+                }
             }
             return updateuser;
         }

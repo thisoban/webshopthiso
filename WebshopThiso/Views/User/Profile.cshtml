@@ -23,7 +23,7 @@
             @Html.DisplayFor(model => model.password)
         </dd>
         @if (ViewBag.admin == "False")
-    {
+        {
             <dt class="col-sm-2">
                 @Html.DisplayNameFor(model => model.Firstname)
             </dt>
@@ -41,6 +41,12 @@
             </dt>
             <dd class="col-sm-10">
                 @Html.DisplayFor(model => model.Adres)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.housenumber)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.housenumber)
             </dd>
             <dt class="col-sm-2">
                 @Html.DisplayNameFor(model => model.Postalcode)

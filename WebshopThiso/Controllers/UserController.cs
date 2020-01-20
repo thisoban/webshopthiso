@@ -72,13 +72,15 @@ namespace WebshopThiso.Controllers
             ViewBag.admin = Request.Cookies["admin"];
             UserViewModel profileuser =  new UserViewModel()
             {
-               
                  uid = _userLogic.GetUser(cookie).uid,
                  Email = _userLogic.GetUser(cookie).Email,
                  password = _userLogic.GetUser(cookie).Passsword,
                  Adres = _userLogic.GetUser(cookie).Adres,
                  Firstname = _userLogic.GetUser(cookie).Firstname,
-                 City = _userLogic.GetUser(cookie).City,
+                 Surname = _userLogic.GetUser(cookie).Surname,
+                 housenumber = _userLogic.GetUser(cookie).Housenumber,
+                 Postalcode = _userLogic.GetUser(cookie).Postalcode,
+                City = _userLogic.GetUser(cookie).City,
                  
             };
 
