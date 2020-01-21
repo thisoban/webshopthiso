@@ -29,8 +29,10 @@ namespace WebshopThiso.Controllers
             return View(ListProducts);
         }
         [Route("Product/Products")]
-        public IActionResult products()
+        public IActionResult products(ProductViewModel viewproducts)
         {
+            ViewBag.admin = Request.Cookies["admin"];
+            ViewBag.uid = Request.Cookies["uid"];
             List<ProductViewModel>products = new List<ProductViewModel>();
             
             foreach (var listproduct in product.GetProducts())
@@ -47,7 +49,9 @@ namespace WebshopThiso.Controllers
         }
         public IActionResult Detail()
         {
-            int id = 6;
+            ViewBag.admin = Request.Cookies["admin"];
+            ViewBag.uid = Request.Cookies["uid"];
+            int id = 234567890;
 
             return View(product.GetproductDetail(id));
         }

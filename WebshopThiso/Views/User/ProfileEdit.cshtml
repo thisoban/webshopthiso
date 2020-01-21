@@ -6,7 +6,7 @@
 
 <h1>ProfileEdit</h1>
 
-<h4>UserViewModel</h4>
+<h4>User Profile Edit</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -23,7 +23,7 @@
                 <input asp-for="password" class="form-control" />
                 <span asp-validation-for="password" class="text-danger"></span>
             </div>
-            @if (Model.City != null)
+            @if (ViewBag.admin == "False")
             {
                 <div class="form-group">
                     <label asp-for="Firstname" class="control-label"></label>
@@ -65,6 +65,6 @@
 </div>
 
 <div>
-    <a asp-action="Profile">Back to List</a>
+    <a asp-action="Profile">Back to Profile</a>
 </div>
 

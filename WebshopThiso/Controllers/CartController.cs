@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Web.Helpers;
 using ILogic;
 using LogicFactory;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing;
 using Models;
 using Newtonsoft.Json;
 using WebshopThiso.Helper;
@@ -14,34 +16,85 @@ namespace WebshopThiso.Controllers
     public class CartController : Controller
     {
         private readonly ICartLogic _cartLogic = LogicFactory.LogicFactory.GCartLogic();
+        private readonly IProductLogic _productlogic = LogicFactory.LogicFactory.GProductLogic();
            [Route("index")]
         
-        public IActionResult Index( IProductLogic iproductlogic)
+        public IActionResult Index( )
         {
+            ViewBag.admin = Request.Cookies["admin"];
+            ViewBag.uid = Request.Cookies["uid"];
             string cookie = Request.Cookies["cartitems"];
-            Dictionary<int, int> winkelmandje = JsonConvert.DeserializeObject<Dictionary<int, int>>(cookie);
-            List<ProductData> allproducts = iproductlogic.GetProducts().ToList();
-            List<ProductData> CartProducts = new List<ProductData>();
-            foreach ((int key, int value) in winkelmandje)
+            if (cookie != null)
             {
-                CartProducts = allproducts.Where(product => product.Id == key).ToList();
+                Dictionary<int, int> winkelmandje = JsonConvert.DeserializeObject<Dictionary<int, int>>(cookie);
+                List<ProductData> allproducts = _productlogic.GetProducts().ToList();
+                List<CartItem> CartProducts = new List<CartItem>();
+                foreach ((int key, int value) in winkelmandje)
+                {
+                    foreach (ProductData data in allproducts.Where(product => product.Serialnumber == key).ToList())
+                    {
+                        CartItem item = new CartItem
+                        {
+                            Product = new ProductViewModel
+                            {
+                                SerialNumber = data.Serialnumber,
+                                Price =  data.Price,
+                                Name =  data.Name
+                            },
+                            Quantity = value
+                        };
+                        CartProducts.Add(item);
+                    }
+                    
+                }
+                
+                return View(CartProducts);
             }
-            return View(CartProducts);
-            //var cart = SessionHelper.GetObjectFromJson<List<ProductViewModel>>(HttpContext.Session, "cart");
-            //ViewBag.cart = cart;
-            //ViewBag.total = cart.Sum(item => item.Price * item.Quantity);
-            //return View();
+
+            return View();
         }
-       [Route("buy/{id}")]
+        [ Route("CartAdd")]
+        public IActionResult CartAdd(int serialnumber, int quantity)
+        {
+            string cookie = Request.Cookies["CartItems"];
+
+            if (cookie != null)
+            {
+                Dictionary<int, int> artikeldictionary = new Dictionary<int, int>();
+                artikeldictionary = JsonConvert.DeserializeObject<Dictionary<int, int>>(cookie);
+                artikeldictionary.Add(serialnumber, quantity);
+                string items = JsonConvert.SerializeObject(artikeldictionary); // Hier zet je de dictionary om in een string
+                Response.Cookies.Append("CartItems", items); // Hier voeg je de items toe aan de winkelwagen
+                return Redirect("../../product/products");
+            }
+            Dictionary<int, int> artikel = new Dictionary<int, int>();
+            artikel.Add(serialnumber, quantity);
+            string item = JsonConvert.SerializeObject(artikel);
+            Response.Cookies.Append("CartItems", item);
+            return Redirect("../../product/Products");
+        }
+
+        public IActionResult CartRemove(CartItem Cartproduct)
+        {
+            string cookie = Request.Cookies["CartItems"];
+            Dictionary<int, int> artikeldictionary = new Dictionary<int, int>();
+            artikeldictionary = JsonConvert.DeserializeObject<Dictionary<int, int>>(cookie);
+            artikeldictionary.Remove(Cartproduct.Product.SerialNumber + Cartproduct.Quantity);
+            return Redirect("../../cart/cart");
+        }
+
+        [Route("buy/{id}")]
         public IActionResult Buy(string id)
         {
-            ProductViewModel productModel = new ProductViewModel();
+         string cookie =  Request.Cookies["cartitems"];
+                ProductViewModel productModel = new ProductViewModel();
             if (SessionHelper.GetObjectFromJson<List<CartItem>>(HttpContext.Session, "cart") == null)
             {
                 List<CartItem> cart = new List<CartItem>();
 
-                //cart.Add(new CartItem { Product = productModel.find();
+                cart.Add(new CartItem { Product = productModel});
                 SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);
+               
             }
             else
             {
@@ -57,7 +110,7 @@ namespace WebshopThiso.Controllers
                 }
                 SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);
             }
-            return RedirectToAction("Index");
+            return RedirectToAction("products", "Product");
         }
 
         [Route("remove/{id}")]

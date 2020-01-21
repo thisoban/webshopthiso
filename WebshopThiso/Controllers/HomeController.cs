@@ -26,6 +26,8 @@ namespace WebshopThiso.Controllers
 
         public IActionResult Privacy()
         {
+            ViewBag.admin = Request.Cookies["admin"];
+            ViewBag.uid = Request.Cookies["uid"];
             return View();
         }
 

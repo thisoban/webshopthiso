@@ -16,6 +16,7 @@
     <title>@ViewData["Title"] - WebshopThiso</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/css/Maint.css" />
 </head>
 <body>
     <header>
@@ -33,7 +34,12 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
-
+                        @if (@ViewBag.admin == "False")
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Product" asp-action="products">products</a>
+                            </li>
+                        }
 
                         @if (@ViewBag.admin == "True")
                         {
@@ -48,23 +54,16 @@
                         </li>
                         @if (@ViewBag.uid != null)
                         {
-                            <div class="dropdown">
-                                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    Dropdown button
-                                </button>
-                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                    <a class="dropdown-item" asp-controller="User" asp-action="Profile">Profile</a>
-                                    @if (@ViewBag.admin == "False")
-                                    {
-                                        <a class="dropdown-item" asp-controller="Order" asp-action="Index">orders</a>
-                                    }
-                                    @if (@ViewBag.admin == "True")
-                                    {
-                                        <a class="dropdown-item" asp-action="#">Something else here</a>
-                                    }
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Profile">Profile</a>
+                            </li>
 
-                                </div>
-                            </div>
+                            @if (@ViewBag.admin == "False")
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Order" asp-action="Index">Orders</a>
+                                </li>
+                            }
                         }
 
                         @if (@ViewBag.uid == null)
@@ -78,16 +77,16 @@
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="LogOut">Logout</a>
                             </li>
-
                         }
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Product" asp-action="CreateProduct">add a product</a>
-                        </li>
 
+                        @if (@ViewBag.admin == "False")
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Cart" asp-action="Index">Shopping Cart</a>
+                            </li>
+                        }
                     </ul>
-                  
                     <div>
-
                     </div>
                 </div>
             </div>

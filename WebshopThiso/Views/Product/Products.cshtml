@@ -24,30 +24,25 @@
                 <div class="block span3">
                     <div class="product">
                         <img src="/images/rubber_duck.jfif">
-                        <div class="buttons">
-                            <a class="buy btn btn-large btn-info" href="#"><i class="icon-shopping-cart"></i> Add to Cart</a>
-                            <a class="preview btn btn-large btn-info" href="#"><i class="icon-eye-open"></i> View item</a>
-                        </div>
                     </div>
-
                     <div class="info">
-                       
+
                         <span class="description">
                             @product.Description
                         </span>
-                        <span class="price">$62.97</span>
-                        <a class="btn btn-info pull-right" href="#"><i class="icon-shopping-cart"></i> Buy Now</a>
+                        <span class="price">@product.Price</span>
+                       
                     </div>
-
+                    <a asp-controller="Product" asp-action="Detail" value="@product.SerialNumber"> Detais</a>
                 </div>
             </div>
         </div>
         <div class="align-content-center">
-            @using (Html.BeginForm("Buy", "Cart", FormMethod.Get))
+            @using (Html.BeginForm("CartAdd", "Cart", FormMethod.Post))
             {
                 <input type="number" name="quantity" min="1" max="5">
-                <input type="hidden" name="id" value="@product.SerialNumber"/>
-                @Html.HiddenFor(model => product.SerialNumber)
+                <input type="hidden" name="serialnumber" value="@product.SerialNumber"/>
+                //@Html.HiddenFor(product.SerialNumber);
                 <input class="btn btn-light" type="submit" value=" voeg toe aan winkelwagen"/>
             }
 

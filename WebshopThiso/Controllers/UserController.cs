@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using DataModel;
 using ILogic;
 using Microsoft.AspNetCore.CookiePolicy;
+using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
@@ -21,6 +22,8 @@ namespace WebshopThiso.Controllers
 
         public   UserViewModel GetUser(string uid)
         {
+            ViewBag.admin = Request.Cookies["admin"];
+            ViewBag.uid = Request.Cookies["uid"];
             UserViewModel user = new UserViewModel
             {
                 uid = _userLogic.GetUser(uid).uid,
@@ -38,6 +41,8 @@ namespace WebshopThiso.Controllers
         [HttpPost]
         public IActionResult Login(UserLoginViewModel user)
         {
+            ViewBag.admin = Request.Cookies["admin"];
+            ViewBag.uid = Request.Cookies["uid"];
             if (ModelState.IsValid)
             {
                 UserData userlog = new UserData();
@@ -52,6 +57,10 @@ namespace WebshopThiso.Controllers
                     myCookie.Expires = now.AddHours(24);
                     Response.Cookies.Append("uid", UserCondition.uid);
                     Response.Cookies.Append("admin", UserCondition.Admin.ToString());
+                    if (UserCondition.Admin == false)
+                    {
+                        Response.Cookies.Append("cart", "");
+                    }
                     return RedirectToAction("index", "Home");
                 }
             }
@@ -61,13 +70,16 @@ namespace WebshopThiso.Controllers
 
         public IActionResult LogOut()
         {
-            
+            ViewBag.admin = Request.Cookies["admin"];
+            ViewBag.uid = Request.Cookies["uid"];
             Response.Cookies.Delete("uid");
             Response.Cookies.Delete("admin");
             return RedirectToAction("Login");
         }
         public IActionResult Profile()
         {
+            ViewBag.admin = Request.Cookies["admin"];
+            ViewBag.uid = Request.Cookies["uid"];
             string cookie =  Request.Cookies["uid"];
             ViewBag.admin = Request.Cookies["admin"];
             UserViewModel profileuser =  new UserViewModel()
@@ -89,9 +101,12 @@ namespace WebshopThiso.Controllers
 
         public IActionResult ProfileEdit()
         {
-            string cookies = Request.Cookies["uid"];
-            ViewBag.admin = cookies;
-           UserViewModel user = new UserViewModel(_userLogic.profile(cookies));
+            
+            string uid = Request.Cookies["uid"];
+            string admin = Request.Cookies["admin"];
+            ViewBag.uid = uid;
+            ViewBag.admin = admin;
+            UserViewModel user = new UserViewModel(_userLogic.profile(uid));
            return View(user);
         }
 
@@ -113,6 +128,7 @@ namespace WebshopThiso.Controllers
                 Surname = user.Surname,
                 Housenumber = user.housenumber,
                 Postalcode = user.Postalcode
+                
             };
             if (admin == "True")
             {
